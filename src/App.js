@@ -6,6 +6,7 @@ import Login from "./Pages/Login";
 import Header from "./Components/Header";
 import Register from "./Pages/Register";
 
+
 function App() {
   return (
     <div>
@@ -23,6 +24,7 @@ function App() {
           </Route>
         </Switch>
       </Router>
+      
     </div>
   );
 }
