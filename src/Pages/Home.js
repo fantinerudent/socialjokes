@@ -14,7 +14,6 @@ const Home = () => {
   return (
     <div className={classes.root}>
       <h1> HOME </h1>
-      <p> Cliquez sur login en haut à droit pour vous connecter</p>
       <KanyeQuote/>
       <ChuckNorrisFact/>
     </div>

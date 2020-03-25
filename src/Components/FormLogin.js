@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -11,18 +12,55 @@ const useStyles = makeStyles(theme => ({
 
 const FormLogin = () => {
   const classes = useStyles();
+  const [error, hasError] = useState(false);
+  const [errorMessage, setNewMessageError] = useState();
+  const [pseudonyme, setPseudonyme] = useState();
+  const [password, setPassword] = useState();
+  const [userData, setUserData] = useState();
+  const [userLogged, setUserLogged] = useState(false);
+  const [message, setNewMessage] = useState("");
+
+  const handleInputPseudonymeChange = event => {
+    setPseudonyme(event.target.value);
+  };
+  const handleInputPasswordChange = event => {
+    setPassword(event.target.value);
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const userData = {
+      pseudonyme,
+      password
+    };
+
+    
+    axios
+      .post("/users/login", userData)
+      .then((response) => {hasError(response.data.error); setNewMessageError(response.data.errorMessage); setUserData(response.data.userData); setUserLogged(response.data.isLogged); setNewMessage(response.data.message)})
+      .catch(err => {
+        console.error(err);
+      });
+
+
+  };
 
   return (
-    <form className={classes.root} noValidate autoComplete="off">
+    <form  onSubmit={handleSubmit} className={classes.root} noValidate autoComplete="off">
       <div>
-        <TextField  required="true"  label="Pseudonyme" />
-        <TextField required="true"  label="Password" />
-        <Button
+        <TextField onChange={handleInputPseudonymeChange} label="Pseudonyme" />
+        <TextField onChange={handleInputPasswordChange} label="Password" />
+        
+        { userLogged &&
+          <span style={{color: 'blue', fontSize: '1em'}}> {message} </span>
+        }
+        { error && 
+          <span style={{color: 'red'}}> {errorMessage} </span>}
+
+          <Button
           style={{ margin: "20px 0 0 30px" }}
           variant="contained"
           color="primary"
           type="submit"
-          disabled="true"
         >
           {" "}
           Envoyer{" "}
@@ -31,6 +69,5 @@ const FormLogin = () => {
     </form>
   );
 };
-
 
 export default FormLogin;
