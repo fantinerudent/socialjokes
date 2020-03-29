@@ -43,7 +43,7 @@ route.post('/login', (req, res) => {
                 if (response.userData.password === informationsUser.password) { 
                     response.message = " You are logged!"
                     response.error = false;
-                    response.isLogged = true;git
+                    response.isLogged = true;
                     res.json(response)
                 } else {
                     response.errorMessage = 'password incorrect';
