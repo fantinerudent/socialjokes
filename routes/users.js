@@ -21,7 +21,7 @@ route.post('/login', (req, res) => {
         pseudonyme: req.body.pseudonyme,
         password: req.body.password
     }
-    //////////////// CONNECTION WITH DATABASE : 
+    //////////////// CONNEXION TO DATABASE : 
     const client = new MongoClient(uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -43,11 +43,12 @@ route.post('/login', (req, res) => {
                 if (response.userData.password === informationsUser.password) { 
                     response.message = " You are logged!"
                     response.error = false;
-                    response.isLogged = true;
+                    response.isLogged = true;git
                     res.json(response)
                 } else {
                     response.errorMessage = 'password incorrect';
                     response.error = true;
+                    response.isLogged = false;
                     res.json(response);
                 }
             }
