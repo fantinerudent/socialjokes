@@ -11,8 +11,13 @@ const response = {
     isLogged: false,
     message: '',
     error: false,
-    errorMessage: ''
+    errorMessage: '',
 }
+
+const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
 
 
 // Une route post login
@@ -22,10 +27,6 @@ route.post('/login', (req, res) => {
         password: req.body.password
     }
     //////////////// CONNEXION TO DATABASE : 
-    const client = new MongoClient(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      });
       client.connect((err, client) => {
           let DB = client.db("social_jokes");
           let collection = DB.collection("users");
@@ -56,16 +57,48 @@ route.post('/login', (req, res) => {
       })
 })
 
-// une route post register
-route.post('/register', (req, res) => {
-    console.log(req, 'req')
-    const userData = {
+route.post("/register", (req, res) => {
+    response.userData = {
         pseudonyme: req.body.pseudonyme,
-        password: req.body.password
+        password: req.body.password,
+        email: req.body.email,
+        nickname: req.body.nickname
     }
-    res.send(console.log(userData, "useeeer data "))
-})
+    client.connect((err) => {
+        if (err) {
+          console.log(err)
+        }
+        let db = client.db("social_jokes");
+        let collection = db.collection("users");
+        collection
+          .find({ pseudonyme: req.body.pseudonyme })
+          .toArray(function(err, result) {
+            if (err) {
+              console.log(err);
+            }
+            if (!result.length) {
+              let insertion = {};
+              insertion.pseudonyme = req.body.pseudonyme;
+              insertion.password = req.body.password;
+              insertion.email = req.body.email;
+              insertion.nickname = req.body.nickname;
+              collection.insertOne(insertion, (err, result) => {
+                    response.message = " You are logged!"
+                    response.error = false;
+                    response.isLogged = true;
+                    res.json(response)
+              });
+            } else {
+                response.errorMessage = "the username is already used"
+                response.error = true;
+                response.isLogged = false;
+                res.json(response)
+            }
+          });
+      });
 
+
+})
 
 
 

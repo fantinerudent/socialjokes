@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
@@ -25,7 +25,7 @@ const FormLogin = () => {
   const [password, setPassword] = useState();
   const [userData, setUserData] = useState();
   const [userLogged, setUserLogged] = useState(false);
-
+  
   const [pseudoEmpty, isPseudoEmpty] = useState(true);
   const [passwordEmpty, isPasswordEmpty] = useState(true);
 
