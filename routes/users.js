@@ -62,7 +62,8 @@ route.post("/register", (req, res) => {
         pseudonyme: req.body.pseudonyme,
         password: req.body.password,
         email: req.body.email,
-        nickname: req.body.nickname
+        name: req.body.name,
+        firstname: req.body.firstname,
     }
     client.connect((err) => {
         if (err) {
@@ -81,7 +82,8 @@ route.post("/register", (req, res) => {
               insertion.pseudonyme = req.body.pseudonyme;
               insertion.password = req.body.password;
               insertion.email = req.body.email;
-              insertion.nickname = req.body.nickname;
+              insertion.name = req.body.name;
+              insertion.firstname = req.body.firstname;
               collection.insertOne(insertion, (err, result) => {
                     response.message = " You are logged!"
                     response.error = false;

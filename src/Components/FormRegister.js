@@ -26,13 +26,18 @@ const FormRegister = () => {
   const [pseudonyme, setPseudonyme] = useState();
   const [password, setPassword] = useState();
   const [confirmationPassword, setConfirmationPassword] = useState();
-  const [nickname, setNickname] = useState();
+  const [name, setName] = useState();
+  const [firstname, setFirstname] = useState();
   const [email, setEmail] = useState();
   const [userData, setUserData] = useState();
   const [userLogged, setUserLogged] = useState(false);
 
-  const handleInputNicknameChange = event => {
-    setNickname(event.target.value);
+  const handleInputNameChange = event => {
+    setName(event.target.value);
+  };
+
+  const handleInputFirstnameChange = event => {
+    setFirstname(event.target.value);
   };
 
   const handleInputPseudonymeChange = event => {
@@ -47,47 +52,53 @@ const FormRegister = () => {
     setConfirmationPassword(event.target.value);
   };
 
-  const handleInputEmailChange = event => {
-    setEmail(event.target.value);
-  };
-
-  const handleSubmit = event => {
-    event.preventDefault();
-    hasError(false);
-
-    let mustIncludes = "@";
-    if (email) {
-      if (email.includes(mustIncludes) === false) {
-        hasError(true);
-        setNewMessageError("your must enter a correct email adress");
-      }
-    }
-
+  const handleBlurForm = (event) => {
     if (password !== confirmationPassword) {
       hasError(true);
       setNewMessageError("you must enter the same password");
     }
+  }
+
+  const handleInputEmailChange = event => {
+    setEmail(event.target.value);
+  };
+
+  const handleChangeForm = (event) => {
+    hasError(false)
+  }
+
+
+  const handleSubmit = event => {
+    console.log("tentative submit")
+    event.preventDefault();
+    hasError(false);
+
 
     const userData = {
       pseudonyme,
       password,
       email,
-      nickname
+      name,
+      firstname
     };
 
-    axios
-      .post("/users/register", userData)
-      .then(response => {
-        hasError(response.data.error);
-        setNewMessageError(response.data.errorMessage);
-        setNewPseudonymecontext(userData.pseudonyme);
-        setUserData(response.data.userData);
-        setUserLogged(response.data.isLogged);
-        setNewLoggedStatus(response.data.isLogged);
-      })
-      .catch(err => {
-        console.error(err);
-      });
+
+    if (!error) {
+      console.log('submit ok')
+      axios
+        .post("/users/register", userData)
+        .then(response => {
+          hasError(response.data.error);
+          setNewMessageError(response.data.errorMessage);
+          setNewPseudonymecontext(userData.pseudonyme);
+          setUserData(response.data.userData);
+          setUserLogged(response.data.isLogged);
+          setNewLoggedStatus(response.data.isLogged);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
   };
 
   return (
@@ -99,22 +110,32 @@ const FormRegister = () => {
       )}
       <form
         onSubmit={handleSubmit}
+        onChange={handleChangeForm}
         className={classes.root}
-        noValidate
         autoComplete="off"
+        onBlur={handleBlurForm}
       >
         <div>
-          <TextField
-            style={{ width: "300px" }}
-            id="registerNickname"
-            label="Nickname"
-            onChange={handleInputNicknameChange}
-          />
           <TextField
             style={{ width: "300px" }}
             id="registerPseudonyme"
             label="Pseudonyme"
             onChange={handleInputPseudonymeChange}
+            required
+          />
+          <TextField
+            style={{ width: "300px" }}
+            id="registerFirstname"
+            label="Firstname"
+            onChange={handleInputFirstnameChange}
+            required
+          />
+          <TextField
+            style={{ width: "300px" }}
+            id="registerName"
+            label="Name"
+            onChange={handleInputNameChange}
+            required
           />
           <TextField
             style={{ width: "300px" }}
@@ -122,6 +143,7 @@ const FormRegister = () => {
             type="password"
             label="Password"
             onChange={handleInputPasswordChange}
+            required
           />
           <TextField
             style={{ width: "300px" }}
@@ -129,12 +151,15 @@ const FormRegister = () => {
             type="password"
             label="Password confirmation"
             onChange={handleInputConfirmationPasswordChange}
+            required
           />
           <TextField
             style={{ width: "300px" }}
             id="registerEmail"
             label="Email"
+            type="email"
             onChange={handleInputEmailChange}
+            required
           />
           <Button
             style={{ margin: "20px 0 0 110px" }}
@@ -145,7 +170,7 @@ const FormRegister = () => {
             {" "}
             Envoyer{" "}
           </Button>
-          {hasError && <div style={{ color: "red" }}> {errorMessage} </div>}
+          {error && <div style={{ color: "red" }}> {errorMessage} </div>}
         </div>
       </form>
     </>

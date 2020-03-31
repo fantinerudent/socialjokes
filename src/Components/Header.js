@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import UserContext from "../Contexts/UserContext";
+import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,7 +29,12 @@ const useStyles = makeStyles(theme => ({
 
 const Header = () => {
   const classes = useStyles();
-  const { pseudonymeContext, isLogged } = useContext(UserContext);
+  const { pseudonymeContext, isLogged, setNewLoggedStatus } = useContext(UserContext);
+
+  const handleClickSignOut = (event) => {
+    setNewLoggedStatus(false);
+  }
+
 
   return (
     <div className={classes.root}>
@@ -42,9 +48,11 @@ const Header = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            Social Jokes
+          
+          <Typography  variant="h6" className={classes.title}>
+            <Link href='/' style={{cursor: "pointer", color:"white", textDecoration: "none"}}>  Social Jokes </Link>
           </Typography>
+
           { !isLogged && (
             <>
               <Link
@@ -71,7 +79,8 @@ const Header = () => {
             <Link
                 className={classes.LinkButton}
                 color="inherit"
-                href="/signout"
+                href="/"
+                onClick={handleClickSignOut}
               >
                 {" "}
                 Sign-out{" "}
