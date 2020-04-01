@@ -17,7 +17,7 @@ const FormRegister = () => {
   const classes = useStyles();
 
   // Use of the context.
-  const { setNewPseudonymecontext, setNewLoggedStatus } = useContext(
+  const { setNewPseudonymeContext, setNewLoggedStatus, setNewNameContext, setNewFirstnameContext, setPasswordContext, setNewEmailContext} = useContext(
     UserContext
   );
 
@@ -90,7 +90,11 @@ const FormRegister = () => {
         .then(response => {
           hasError(response.data.error);
           setNewMessageError(response.data.errorMessage);
-          setNewPseudonymecontext(userData.pseudonyme);
+          setNewPseudonymeContext(userData.pseudonyme);
+          setPasswordContext(userData.password);
+          setNewNameContext(userData.name);
+          setNewFirstnameContext(userData.firstname);
+          setNewEmailContext(userData.email);
           setUserData(response.data.userData);
           setUserLogged(response.data.isLogged);
           setNewLoggedStatus(response.data.isLogged);

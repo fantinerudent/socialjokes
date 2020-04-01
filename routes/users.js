@@ -41,10 +41,14 @@ route.post('/login', (req, res) => {
                 res.json(response);
             } else {
                 const informationsUser = result[0];
+                console.log('information user',informationsUser)
                 if (response.userData.password === informationsUser.password) { 
                     response.message = " You are logged!"
                     response.error = false;
                     response.isLogged = true;
+                    response.email = informationsUser.email;
+                    response.name = informationsUser.name;
+                    response.firstname = informationsUser.firstname;
                     res.json(response)
                 } else {
                     response.errorMessage = 'password incorrect';

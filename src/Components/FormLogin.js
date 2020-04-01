@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
 
 const FormLogin = () => {
   // Use of the context.
-  const { setNewPseudonymecontext, setNewLoggedStatus } = useContext(
+  const { setNewPseudonymeContext, setNewLoggedStatus, setPasswordContext, setNewNameContext, setNewFirstnameContext, setNewEmailContext } = useContext(
     UserContext
   );
 
@@ -60,10 +60,15 @@ const FormLogin = () => {
       .then(response => {
         hasError(response.data.error);
         setNewMessageError(response.data.errorMessage);
-        setNewPseudonymecontext(userData.pseudonyme);
+        setNewPseudonymeContext(userData.pseudonyme);
+        setPasswordContext(userData.password);
+        setNewLoggedStatus(response.data.isLogged);
+        setNewNameContext(response.data.name);
+        setNewEmailContext(response.data.email);
+        setNewFirstnameContext(response.data.firstname);
         setUserData(response.data.userData);
         setUserLogged(response.data.isLogged);
-        setNewLoggedStatus(response.data.isLogged);
+
       })
       .catch(err => {
         console.error(err);
