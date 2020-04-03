@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,18 +14,22 @@ const useStyles = makeStyles(theme => ({
 
 const FormLogin = () => {
   // Use of the context.
-  const { setNewPseudonymeContext, setNewLoggedStatus, setPasswordContext, setNewNameContext, setNewFirstnameContext, setNewEmailContext } = useContext(
+  const { userData, setNewPseudonymeContext, setNewLoggedStatus, setPasswordContext, setNewNameContext, setNewFirstnameContext, setNewEmailContext, localUserData, userLoggedLocal, setNewLocalUserData, isUserLoggedLocal } = useContext(
     UserContext
   );
+
+  useEffect(() => {
+    isUserLoggedLocal(JSON.parse(localStorage.getItem("isLogged")))
+  }, [isUserLoggedLocal]);
+ 
 
   const classes = useStyles();
   const [error, hasError] = useState(false);
   const [errorMessage, setNewMessageError] = useState();
   const [pseudonyme, setPseudonyme] = useState();
   const [password, setPassword] = useState();
-  const [userData, setUserData] = useState();
+  // const [userDataLocal, setUserData] = useLocalState('isLogged');
   const [userLogged, setUserLogged] = useState(false);
-  
   const [pseudoEmpty, isPseudoEmpty] = useState(true);
   const [passwordEmpty, isPasswordEmpty] = useState(true);
 
@@ -66,18 +70,20 @@ const FormLogin = () => {
         setNewNameContext(response.data.name);
         setNewEmailContext(response.data.email);
         setNewFirstnameContext(response.data.firstname);
-        setUserData(response.data.userData);
         setUserLogged(response.data.isLogged);
-
+        setNewLocalUserData(localStorage.setItem("isLogged", true));
       })
       .catch(err => {
         console.error(err);
-      });
-  };
+      }); 
+
+     
+    };
+
 
   return (
     <>
-      {userLogged && (
+      {userLoggedLocal && (
         <>
           <Redirect to={"/profil"} />
         </>
