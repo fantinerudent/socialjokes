@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./Pages/Home";
@@ -9,7 +9,9 @@ import Profil from "./Pages/Profil";
 import UserContext from "./Contexts/UserContext";
 
 function App() {
-  const [isLogged, setNewLoggedStatus] = useState(false);
+  
+  const [userData, setNewUserData] = useState();
+  const [isLogged, setNewLoggedStatus] = useState(null);
   const [pseudonymeContext, setNewPseudonymeContext] = useState(null);
   const [nameContext, setNewNameContext] = useState(null);
   const [firstnameContext, setNewFirstnameContext] = useState(null);
@@ -24,30 +26,47 @@ function App() {
   ] = useState(null);
   const [favsContext, setNewFavsContext] = useState(null);
 
+
+ // will permit to state a new status of logged
+  const [localUserData, setNewLocalUserData] = useState(localStorage.setItem('isLogged', false));
+  // will return a boolean false / true in userLoggedLocal.
+  const [userLoggedLocal, isUserLoggedLocal] = useState(JSON.parse(localStorage.getItem("isLogged")));
+
+
+  console.log('app',typeof(userLoggedLocal))
+  
   const value = {
-    isLogged,
+    localUserData,
+    userLoggedLocal,
+    isUserLoggedLocal,
+    setNewLocalUserData,
+    userData: {
+      isLogged,
+      pseudonymeContext,
+      passwordContext,
+      firstnameContext,
+      nameContext,
+      ageContext,
+      emailContext,
+      descriptionContext,
+      genderContext,
+      contactInformationsContext,
+      favsContext
+    },
+    setNewUserData,
     setNewLoggedStatus,
-    pseudonymeContext,
     setNewPseudonymeContext,
-    firstnameContext,
     setNewFirstnameContext,
-    nameContext,
     setNewNameContext,
-    ageContext,
     setNewAgeContext,
-    passwordContext,
     setPasswordContext,
-    emailContext,
     setNewEmailContext,
-    descriptionContext,
     setNewDescriptionContext,
-    genderContext,
     setNewGenderContext,
-    contactInformationsContext,
     setNewContactInformationsContext,
-    favsContext,
     setNewFavsContext
   };
+
 
   return (
     <UserContext.Provider value={value}>

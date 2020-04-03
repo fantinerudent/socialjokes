@@ -9,7 +9,6 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import UserContext from "../Contexts/UserContext";
-import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,12 +28,20 @@ const useStyles = makeStyles(theme => ({
 
 const Header = () => {
   const classes = useStyles();
-  const { pseudonymeContext, isLogged, setNewLoggedStatus } = useContext(UserContext);
+  const { localUserData, userData, userLoggedLocal, setNewLocalUserData} = useContext(
+    UserContext
+  );
 
-  const handleClickSignOut = (event) => {
-    setNewLoggedStatus(false);
-  }
+  setNewLocalUserData(JSON.parse(localStorage.getItem("isLogged")))
+  console.log("header => ", userLoggedLocal)
 
+
+  const handleClickSignOut = event => {
+    console.log('before',localUserData)
+    localStorage.setItem('isLogged', false)
+    setNewLocalUserData(localStorage.setItem("isLogged", false))
+    console.log('after',localUserData)
+  };
 
   return (
     <div className={classes.root}>
@@ -48,12 +55,22 @@ const Header = () => {
           >
             <MenuIcon />
           </IconButton>
-          
-          <Typography  variant="h6" className={classes.title}>
-            <Link href='/' style={{cursor: "pointer", color:"white", textDecoration: "none"}}>  Social Jokes </Link>
+
+          <Typography variant="h6" className={classes.title}>
+            <Link
+              href="/"
+              style={{
+                cursor: "pointer",
+                color: "white",
+                textDecoration: "none"
+              }}
+            >
+              {" "}
+              Social Jokes{" "}
+            </Link>
           </Typography>
 
-          { !isLogged && (
+          {!userLoggedLocal && (
             <>
               <Link
                 className={classes.LinkButton}
@@ -73,10 +90,14 @@ const Header = () => {
               </Link>{" "}
             </>
           )}
-          { isLogged && (
+
+          {userLoggedLocal && (
             <>
-            <span style={{marginRight: '10px'}}> {pseudonymeContext} est connecté : </span>
-            <Link
+              <span style={{ marginRight: "10px" }}>
+                {" "}
+                {userData.pseudonymeContext} est connecté :{" "}
+              </span>
+              <Link
                 className={classes.LinkButton}
                 color="inherit"
                 href="/"

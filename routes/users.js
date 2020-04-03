@@ -41,7 +41,6 @@ route.post('/login', (req, res) => {
                 res.json(response);
             } else {
                 const informationsUser = result[0];
-                console.log('information user',informationsUser)
                 if (response.userData.password === informationsUser.password) { 
                     response.message = " You are logged!"
                     response.error = false;
