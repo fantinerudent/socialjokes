@@ -1,78 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect, useMemo } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
 import Header from "./Components/Header";
 import Register from "./Pages/Register";
 import Profil from "./Pages/Profil";
-import UserContext from "./Contexts/UserContext";
+import UserContext, {
+  UserProvider,
+  UserConsumer,
+} from "./Contexts/UserContext";
 
 function App() {
-  const [isLogged, setNewLoggedStatus] = useState(false);
-  const [pseudonymeContext, setNewPseudonymeContext] = useState(null);
-  const [nameContext, setNewNameContext] = useState(null);
-  const [firstnameContext, setNewFirstnameContext] = useState(null);
-  const [ageContext, setNewAgeContext] = useState(null);
-  const [passwordContext, setPasswordContext] = useState(null);
-  const [emailContext, setNewEmailContext] = useState(null);
-  const [descriptionContext, setNewDescriptionContext] = useState(null);
-  const [genderContext, setNewGenderContext] = useState(null);
-  const [
-    contactInformationsContext,
-    setNewContactInformationsContext
-  ] = useState(null);
-  const [favsContext, setNewFavsContext] = useState(null);
+  // the user object must contain : pseudonyme, name, firstname, email adress, gender, age, password...
+  const [user, setUser] = useState();
+  // this will determines if the user is logged.
+  const [isLogged, setIsLogged] = useState(false);
 
-  const value = {
-    isLogged,
-    setNewLoggedStatus,
-    pseudonymeContext,
-    setNewPseudonymeContext,
-    firstnameContext,
-    setNewFirstnameContext,
-    nameContext,
-    setNewNameContext,
-    ageContext,
-    setNewAgeContext,
-    passwordContext,
-    setPasswordContext,
-    emailContext,
-    setNewEmailContext,
-    descriptionContext,
-    setNewDescriptionContext,
-    genderContext,
-    setNewGenderContext,
-    contactInformationsContext,
-    setNewContactInformationsContext,
-    favsContext,
-    setNewFavsContext
-  };
+  const providerValue = useMemo(
+    () => ({ user, setUser, isLogged, setIsLogged }),
+    [user, setUser, isLogged, setIsLogged]
+  );
 
   return (
-    <UserContext.Provider value={value}>
-      <div>
+    <UserProvider value={providerValue}>
+      <Router>
         <Header />
-        <Router>
-          <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route exact path="/login">
-              <Login />
-            </Route>
-            <Route path="/register">
-              <Register />
-            </Route>
-            {isLogged && (
-              <Route path="/profil">
-                <Profil />
-              </Route>
-            )}
-          </Switch>
-        </Router>
-      </div>
-    </UserContext.Provider>
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route exact path="/login">
+            <Login />
+          </Route>
+          <Route path="/register">
+            <Register />
+          </Route>
+          <Route path="/profil">
+            <Profil />
+          </Route>
+        </Switch>
+      </Router>
+    </UserProvider>
   );
 }
 

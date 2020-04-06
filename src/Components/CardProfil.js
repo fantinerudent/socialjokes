@@ -38,20 +38,11 @@ const useStyles = makeStyles((theme) => ({
 
 const CardProfil = () => {
   const {
-    pseudonymeContext,
-    passwordContext,
-    firstnameContext,
-    nameContext,
-    emailContext,
-    ageContext,
-    descriptionContext,
-    genderContext,
-    contactInformationsContext,
-    favsContext,
+    user,
     isLogged
   } = useContext(UserContext);
 
-  const firstLetterPseudonyme = pseudonymeContext.charAt(0);
+  const firstLetterPseudonyme = user.pseudonyme.charAt(0);
   console.log(firstLetterPseudonyme)
 
   const classes = useStyles();
@@ -64,35 +55,35 @@ const CardProfil = () => {
         <li>
           {" "}
           my pseudonyme :{" "}
-          <span className={classes.userData}> {pseudonymeContext} </span>{" "}
+          <span className={classes.userData}> {user.pseudonyme} </span>{" "}
         </li>
         <li>
           {" "}
           my password :{" "}
-          <span className={classes.userData}> {passwordContext} </span>{" "}
+          <span className={classes.userData}> {user.password} </span>{" "}
         </li>
         <li>
           {" "}
           my first name :{" "}
-          <span className={classes.userData}> {firstnameContext} </span>{" "}
+          <span className={classes.userData}> {user.firstname} </span>{" "}
         </li>
         <li>
           {" "}
           my name : <span className={classes.userData}>
             {" "}
-            {nameContext}{" "}
+            {user.namet}{" "}
           </span>{" "}
         </li>
         <li>
           {" "}
           my email adress :{" "}
-          <span className={classes.userData}> {emailContext} </span>{" "}
+          <span className={classes.userData}> {user.email} </span>{" "}
         </li>
         <li>
           {" "}
           my age :{" "}
-          {ageContext ? (
-            <span className={classes.userData}> {ageContext} </span>
+          {user.age ? (
+            <span className={classes.userData}> {user.age} </span>
           ) : (
             <span className={classes.information}>
               {" "}
@@ -103,8 +94,8 @@ const CardProfil = () => {
         <li>
           {" "}
           my description :{" "}
-          {descriptionContext ? (
-            <span className={classes.userData}> {descriptionContext} </span>
+          {user.description ? (
+            <span className={classes.userData}> {user.description} </span>
           ) : (
             <span className={classes.information}>
               {" "}
@@ -115,8 +106,8 @@ const CardProfil = () => {
         <li>
           {" "}
           my contact informations :{" "}
-          {contactInformationsContext ? (
-            <span className={classes.userData}> {contactInformationsContext} </span>
+          {user.contactInformations ? (
+            <span className={classes.userData}> {user.contactInformations } </span>
           ) : (
             <span className={classes.information}>
               {" "}
@@ -127,8 +118,8 @@ const CardProfil = () => {
         <li>
           {" "}
           my favs :{" "}
-          {favsContext ? (
-            <span className={classes.userData}> {favsContext} </span>
+          {user.favs ? (
+            <span className={classes.userData}> {user.favs} </span>
           ) : (
             <span className={classes.information}>
               {" "}
@@ -139,8 +130,8 @@ const CardProfil = () => {
         <li>
           {" "}
           my gender :{" "}
-          {genderContext ? (
-            <span className={classes.userData}> {genderContext} </span>
+          {user.gender ? (
+            <span className={classes.userData}> {user.gender} </span>
           ) : (
             <span className={classes.information}>
               {" "}

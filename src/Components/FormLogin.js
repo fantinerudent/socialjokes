@@ -1,10 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
 import UserContext from "../Contexts/UserContext";
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,18 +15,19 @@ const useStyles = makeStyles(theme => ({
 
 const FormLogin = () => {
   // Use of the context.
-  const { setNewPseudonymeContext, setNewLoggedStatus, setPasswordContext, setNewNameContext, setNewFirstnameContext, setNewEmailContext } = useContext(
-    UserContext
-  );
+  const { user, setUser, setIsLogged, isLogged} = useContext(UserContext);
+
+
+
+  //   console.log("ds le use effect", user);
+  // }, [user, setLoggedUser]);
 
   const classes = useStyles();
   const [error, hasError] = useState(false);
   const [errorMessage, setNewMessageError] = useState();
   const [pseudonyme, setPseudonyme] = useState();
   const [password, setPassword] = useState();
-  const [userData, setUserData] = useState();
-  const [userLogged, setUserLogged] = useState(false);
-  
+
   const [pseudoEmpty, isPseudoEmpty] = useState(true);
   const [passwordEmpty, isPasswordEmpty] = useState(true);
 
@@ -60,15 +62,8 @@ const FormLogin = () => {
       .then(response => {
         hasError(response.data.error);
         setNewMessageError(response.data.errorMessage);
-        setNewPseudonymeContext(userData.pseudonyme);
-        setPasswordContext(userData.password);
-        setNewLoggedStatus(response.data.isLogged);
-        setNewNameContext(response.data.name);
-        setNewEmailContext(response.data.email);
-        setNewFirstnameContext(response.data.firstname);
-        setUserData(response.data.userData);
-        setUserLogged(response.data.isLogged);
-
+        setUser(response.data.userData)
+        setIsLogged(response.data.isLogged)
       })
       .catch(err => {
         console.error(err);
@@ -77,7 +72,7 @@ const FormLogin = () => {
 
   return (
     <>
-      {userLogged && (
+      {isLogged && (
         <>
           <Redirect to={"/profil"} />
         </>

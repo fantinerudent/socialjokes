@@ -1,32 +1,8 @@
-import { createContext } from "react";
+import React from 'react'
 
+const UserContext = React.createContext();
 
-const userContext = {
-  pseudonymeContext: null,
-  setNewPseudonymeContext: () => {},
-  nameContext: null,
-  setNewNameContext: () => {},
-  firstnameContext: null,
-  setNewFirstnameContext: () => {},
-  passwordContext: null,
-  setNewPasswordContext: () => {},
-  ageContext: null,
-  setNewAgeContext: () => {},
-  emailContext: null,
-  setNewEmailContext : () => {},
-  descriptionContext: null,
-  setNewDescriptionlContext : () => {},
-  avatar: null,
-  favsContext: null,
-  setNewFavsContext: null,
-  genderContext: null,
-  setNewGenderContext: () => {},
-  contactInformationsContext: null,
-  setNewcontactInformationsContext: () => {},
-  isLogged: false,
-  setNewLoggedStatus: () => {}
-};
+export const UserProvider = UserContext.Provider
+export const UserConsumer = UserContext.Consumer
 
-const UserContext = createContext(userContext);
-
-export default UserContext;
+export default UserContext

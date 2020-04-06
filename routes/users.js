@@ -46,9 +46,15 @@ route.post('/login', (req, res) => {
                     response.message = " You are logged!"
                     response.error = false;
                     response.isLogged = true;
-                    response.email = informationsUser.email;
-                    response.name = informationsUser.name;
-                    response.firstname = informationsUser.firstname;
+                    response.userData = {
+                      pseudonyme: informationsUser.pseudonyme,
+                      password: informationsUser.password,
+                      name: informationsUser.name,
+                      firstname: informationsUser.firstname,
+                      gender: informationsUser.gender,
+                      age: informationsUser.age,
+                      email: informationsUser.email,
+                    };
                     res.json(response)
                 } else {
                     response.errorMessage = 'password incorrect';
