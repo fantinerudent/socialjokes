@@ -42,7 +42,8 @@ function App() {
             <Register />
           </Route>
           <Route path="/profil">
-            <Profil />
+            {isLogged && <Profil />} 
+            {!isLogged && <Redirect to="/" />}
           </Route>
         </Switch>
       </Router>
