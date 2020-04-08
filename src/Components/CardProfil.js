@@ -12,45 +12,42 @@ const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: "58vw",
     margin: "0 auto",
-    minWidth: 275
+    minWidth: 275,
   },
   userData: {
-    fontWeight: "bolder"
+    fontWeight: "bolder",
   },
   orange: {
     color: theme.palette.getContrastText(deepOrange[500]),
-    backgroundColor: deepOrange[500]
+    backgroundColor: deepOrange[500],
   },
   purple: {
     color: theme.palette.getContrastText(deepPurple[500]),
-    backgroundColor: deepPurple[500]
+    backgroundColor: deepPurple[500],
   },
   information: {
-    color: "blue"
+    color: "blue",
   },
   title: {
-    fontSize: 34
+    fontSize: 34,
   },
   pos: {
-    marginBottom: 12
-  }
+    marginBottom: 12,
+  },
 }));
 
 const CardProfil = () => {
-  const {
-    user,
-    isLogged
-  } = useContext(UserContext);
+  const { user  } = useContext(UserContext);
 
   const firstLetterPseudonyme = user.pseudonyme.charAt(0);
-  console.log(firstLetterPseudonyme)
+  console.log(firstLetterPseudonyme);
 
   const classes = useStyles();
 
   return (
     <Card className={classes.root}>
       <CardContent>
-      <Avatar className={classes.orange}> {firstLetterPseudonyme }</Avatar>
+        <Avatar className={classes.orange}> {firstLetterPseudonyme}</Avatar>
         <ul className={classes.title}> MY PROFILE : </ul>
         <li>
           {" "}
@@ -107,7 +104,10 @@ const CardProfil = () => {
           {" "}
           my contact informations :{" "}
           {user.contactInformations ? (
-            <span className={classes.userData}> {user.contactInformations } </span>
+            <span className={classes.userData}>
+              {" "}
+              {user.contactInformations}{" "}
+            </span>
           ) : (
             <span className={classes.information}>
               {" "}

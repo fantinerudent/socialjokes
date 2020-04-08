@@ -1,13 +1,9 @@
-import React, {useContext} from 'react';
+import React from "react";
 import CardProfil from "../Components/CardProfil";
 // import UserContext from '../Contexts/UserContext';
 
 const Profil = () => {
-    // const {pseudonymeContext, passwordContext, firstnameContext, nameContext, emailContext, isLogged, } = useContext(UserContext);
+  return <CardProfil />;
+};
 
-    return ( 
-         <CardProfil/>                 
-    ); 
-}
- 
 export default Profil;

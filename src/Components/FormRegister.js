@@ -17,7 +17,7 @@ const FormRegister = () => {
   const classes = useStyles();
 
   // Use of the context.
-  const { setNewPseudonymeContext, setNewLoggedStatus, setNewNameContext, setNewFirstnameContext, setPasswordContext, setNewEmailContext} = useContext(
+  const { setUser, setIsLogged, isLogged} = useContext(
     UserContext
   );
 
@@ -29,8 +29,6 @@ const FormRegister = () => {
   const [name, setName] = useState();
   const [firstname, setFirstname] = useState();
   const [email, setEmail] = useState();
-  const [userData, setUserData] = useState();
-  const [userLogged, setUserLogged] = useState(false);
 
   const handleInputNameChange = event => {
     setName(event.target.value);
@@ -90,14 +88,8 @@ const FormRegister = () => {
         .then(response => {
           hasError(response.data.error);
           setNewMessageError(response.data.errorMessage);
-          setNewPseudonymeContext(userData.pseudonyme);
-          setPasswordContext(userData.password);
-          setNewNameContext(userData.name);
-          setNewFirstnameContext(userData.firstname);
-          setNewEmailContext(userData.email);
-          setUserData(response.data.userData);
-          setUserLogged(response.data.isLogged);
-          setNewLoggedStatus(response.data.isLogged);
+          setUser(response.data.userData)
+          setIsLogged(response.data.isLogged);
         })
         .catch(err => {
           console.error(err);
@@ -107,7 +99,7 @@ const FormRegister = () => {
 
   return (
     <>
-      {userLogged && (
+      {isLogged && (
         <>
           <Redirect to={"/profil"} />
         </>

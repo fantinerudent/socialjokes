@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Typography, IconButton } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import UserContext from "../Contexts/UserContext";
-import { Redirect, Router, Link } from "react-router-dom";
+import {  Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,7 +32,6 @@ const Header = () => {
 
   localStorage.setItem("isLogged", isLogged);
   const isLoggedLocally = JSON.parse(localStorage.getItem("isLogged"));
-  const pseudoLocally = localStorage.getItem("pseudo");
 
   const handleClickSignOut = (event) => {
     setIsLogged(false);

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import "./App.css";
 import {
   BrowserRouter as Router,
@@ -11,10 +11,7 @@ import Login from "./Pages/Login";
 import Header from "./Components/Header";
 import Register from "./Pages/Register";
 import Profil from "./Pages/Profil";
-import UserContext, {
-  UserProvider,
-  UserConsumer,
-} from "./Contexts/UserContext";
+import { UserProvider } from "./Contexts/UserContext";
 
 function App() {
   // the user object must contain : pseudonyme, name, firstname, email adress, gender, age, password...
@@ -42,7 +39,7 @@ function App() {
             <Register />
           </Route>
           <Route path="/profil">
-            {isLogged && <Profil />} 
+            {isLogged && <Profil />}
             {!isLogged && <Redirect to="/" />}
           </Route>
         </Switch>

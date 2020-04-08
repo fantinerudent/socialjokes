@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext} from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
@@ -15,12 +15,8 @@ const useStyles = makeStyles(theme => ({
 
 const FormLogin = () => {
   // Use of the context.
-  const { user, setUser, setIsLogged, isLogged} = useContext(UserContext);
+  const { setUser, setIsLogged, isLogged} = useContext(UserContext);
 
-
-
-  //   console.log("ds le use effect", user);
-  // }, [user, setLoggedUser]);
 
   const classes = useStyles();
   const [error, hasError] = useState(false);
