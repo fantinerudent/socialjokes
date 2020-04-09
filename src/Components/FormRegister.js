@@ -67,7 +67,6 @@ const FormRegister = () => {
 
 
   const handleSubmit = event => {
-    console.log("tentative submit")
     event.preventDefault();
     hasError(false);
 
@@ -82,7 +81,6 @@ const FormRegister = () => {
 
 
     if (!error) {
-      console.log('submit ok')
       axios
         .post("/users/register", userData)
         .then(response => {
