@@ -32,7 +32,6 @@ let mailOptions = function (receiver, newPassword) {
   };
 };
 
-
 const response = {
   userData: {},
   isLogged: false,
@@ -76,6 +75,8 @@ route.post("/login", (req, res) => {
             response.userData = {
               pseudonyme: informationsUser.pseudonyme,
               password: informationsUser.password,
+              favs: informationsUser.favs,
+              description: informationsUser.description,
               name: informationsUser.name,
               firstname: informationsUser.firstname,
               gender: informationsUser.gender,
@@ -137,19 +138,60 @@ route.post("/register", (req, res) => {
   });
 });
 
-// route.post("/userdetails", (req, res) => {
-//   response.userDataAdding = {
-
-//   }
-//   client.connect((err) => {
-//     if (err) {
-//       console.log(err);
-//     }
-//     let db = client.db("social_jokes");
-//     let collection = db.collection("users");
-
-//   })
-// })
+route.post("/userdetails", (req, res) => {
+  let userDataAdding = {
+    pseudonyme: req.body.pseudonyme,
+  };
+  if (req.body.age) {
+    userDataAdding.age = parseInt(req.body.age);
+  }
+  if (req.body.description) {
+    userDataAdding.description = req.body.description;
+  }
+  if (req.body.favs) {
+    userDataAdding.favs = req.body.favs;
+  }
+  if (req.body.gender) {
+    userDataAdding.gender = req.body.gender;
+  }
+  console.log(userDataAdding);
+  response.userDataAdding = userDataAdding;
+  client.connect((err) => {
+    if (err) {
+      console.log(err);
+    }
+    let db = client.db("social_jokes");
+    let collection = db.collection("users");
+    console.log('userDataAdding', userDataAdding)
+    collection
+      .findOneAndUpdate(
+        { pseudonyme: req.body.pseudonyme },
+        {
+          $set: {
+            age: userDataAdding.age,
+            gender: userDataAdding.gender,
+            description: userDataAdding.description,
+            favs: userDataAdding.favs,
+          },
+        }
+      )
+      .then((result) => {
+        if (!result.value) {
+          console.log('profile not updated')
+          response.errorMessage = "something went wrong";
+          response.error = true;
+          res.json(response);
+         
+        } else {
+          console.log("update ok!")
+          response.error = false;
+          response.message = true;
+          response.messageToShow = " Your profile has been updated ! ";
+          res.json(response)
+        }
+      }).catch((err)=> {console.log(err)}) ;
+  });
+});
 
 route.post("/passwordforgotten", (req, res) => {
   response.userData = {
@@ -184,13 +226,16 @@ route.post("/passwordforgotten", (req, res) => {
           response.message = true;
           response.mailSent = true;
           res.json(response);
-          transporter.sendMail(mailOptions(req.body.email, newPassword), function(err,data) {
-            if (err) {
-              console.log(err)
-            } else {
-              console.log('email sent')
+          transporter.sendMail(
+            mailOptions(req.body.email, newPassword),
+            function (err, data) {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log("email sent");
+              }
             }
-          })
+          );
         }
       });
   });

@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import axios from "axios";
 import UserContext from "../Contexts/UserContext";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -7,11 +8,10 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import { deepOrange, deepPurple } from "@material-ui/core/colors";
-import  Favorites from "./userDetails/Favorites";
-import  Description from "./userDetails/Description";
-import  Age from "./userDetails/Age";
-import  Gender from "./userDetails/Gender";
-import  ContactInformations from "./userDetails/ContactInformations";
+import Favorites from "./userDetails/Favorites";
+import Description from "./userDetails/Description";
+import Age from "./userDetails/Age";
+import Gender from "./userDetails/Gender";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,6 +21,11 @@ const useStyles = makeStyles((theme) => ({
   },
   userData: {
     fontWeight: "bolder",
+    backgroundColor: 'lightblue',
+    color: "darkblue",
+    borderRadius: '30px',
+    marginLeft: '10px',
+    paddingRight: '7px'
   },
   orange: {
     color: theme.palette.getContrastText(deepOrange[500]),
@@ -42,14 +47,75 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CardProfil = () => {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+  let copyUser = user;
+  console.log('user', user)
+
   const firstLetterPseudonyme = user.pseudonyme.charAt(0);
   const classes = useStyles();
+  const [newInformationAdded, setNewInformationAdded] = useState(false);
   const [openOptions, setOpenOptions] = useState(false);
+  let arrayOfFavorites = [];
+  const [error, hasError] = useState(false);
+  const [message, hasMessage] = useState(false);
+  const [errorMessage, setNewMessageError] = useState();
+  const [messageToShow, setMessageToShow] = useState();
+  const [description, setDescription] = useState();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(event);
+    // console.log('array of favorites',arrayOfFavorites)
+    copyUser.description = description;
+    copyUser.favs = arrayOfFavorites;
+    console.log("copy user", copyUser);
+    if (newInformationAdded) {
+      if (copyUser) {
+        setUser(copyUser);
+        // working on the back part :
+        axios
+          .post("/users/userdetails", copyUser)
+          .then((response) => {
+            console.log(response);
+            hasError(response.data.error);
+            setNewMessageError(response.data.errorMessage);
+            hasMessage(response.data.message);
+            setMessageToShow(response.data.messageToShow);
+            console.log(message);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+    } else {
+      console.log("nothing to add");
+    }
+  };
+
+  const handleChangeDescription = (event) => {
+    setDescription(event.target.value);
+    setNewInformationAdded(true);
+  };
+
+  const handleChangeAge = (event) => {
+    copyUser.age = event.target.value;
+    setNewInformationAdded(true);
+  };
+
+  const handleCheckedFavs = (value) => {
+    if (!arrayOfFavorites.includes(value)) {
+      arrayOfFavorites.push(value);
+      setNewInformationAdded(true);
+    } else {
+      let index = arrayOfFavorites.indexOf(value);
+      arrayOfFavorites.splice(index, 1);
+      setNewInformationAdded(true);
+    }
+  };
+
+  const handleChangeGender = (event) => {
+    event.preventDefault();
+    copyUser.gender = event.target.value;
+    setNewInformationAdded(true);
   };
 
   return (
@@ -58,26 +124,26 @@ const CardProfil = () => {
         <Avatar className={classes.orange}> {firstLetterPseudonyme}</Avatar>
         <ul className={classes.title}> MY PROFILE : </ul>
         <li>
-          my pseudonyme :{" "}
-          <span className={classes.userData}> {user.pseudonyme} </span>{" "}
+          my pseudonyme :
+          <span className={classes.userData}> {user.pseudonyme} </span>
         </li>
         <li>
-          my password :{" "}
-          <span className={classes.userData}> {user.password} </span>{" "}
+          my password :
+          <span className={classes.userData}> {user.password} </span>
         </li>
         <li>
-          my first name :{" "}
-          <span className={classes.userData}> {user.firstname} </span>{" "}
+          my first name :
+          <span className={classes.userData}> {user.firstname} </span>
         </li>
         <li>
-          my name : <span className={classes.userData}> {user.name} </span>{" "}
+          my name : <span className={classes.userData}> {user.name} </span>
         </li>
         <li>
-          my email adress :{" "}
-          <span className={classes.userData}> {user.email} </span>{" "}
+          my email adress :
+          <span className={classes.userData}> {user.email} </span>
         </li>
         <li>
-          my age :{" "}
+          my age :
           {user.age ? (
             <span className={classes.userData}> {user.age} </span>
           ) : (
@@ -87,75 +153,65 @@ const CardProfil = () => {
           )}
         </li>
         <li>
-          my description :{" "}
+          my description :
           {user.description ? (
             <span className={classes.userData}> {user.description} </span>
           ) : (
             <span className={classes.information}>
               {" "}
-              you must enter a description{" "}
+              you must enter a description
             </span>
           )}
         </li>
         <li>
-          my contact informations :{" "}
-          {user.contactInformations ? (
-            <span className={classes.userData}>
-              {" "}
-              {user.contactInformations}{" "}
-            </span>
-          ) : (
-            <span className={classes.information}>
-              {" "}
-              you must enter your contact informations{" "}
-            </span>
-          )}
-        </li>
-        <li>
-          {" "}
-          my favs :{" "}
+          my favs :
           {user.favs ? (
-            <span className={classes.userData}> {user.favs} </span>
+            <span className={classes.userData}> - {user.favs.map(x =>x + ' - ')} </span>
           ) : (
             <span className={classes.information}>
-              you must enter your favs{" "}
+              you must enter your favs
             </span>
           )}
         </li>
         <li>
-          my gender :{" "}
+          my gender :
           {user.gender ? (
             <span className={classes.userData}> {user.gender} </span>
           ) : (
             <span className={classes.information}>
               my teachers said we need this informations but, I really don't
-              know why.{" "}
+              know why.
             </span>
           )}
         </li>
       </CardContent>
       <CardActions>
-        <Button
-          size="small"
-          onClick={() => {
-            setOpenOptions(true);
-          }}
-        >
-          {" "}
-          Update my informations{" "}
-        </Button>
+        {error && <span> {errorMessage} </span>}
+        {message && <span> {messageToShow} </span>}
+        {!user.description ||
+          !user.favs ||
+          !user.age ||
+          (!user.gender && (
+            <Button
+              size="small"
+              onClick={() => {
+                setOpenOptions(true);
+              }}
+            >
+              Update my informations
+            </Button>
+          ))}
         {openOptions && (
           <form onSubmit={handleSubmit} autoComplete="off">
-            {!user.description && <Description />}
-            {!user.contactInformations && <ContactInformations />}
-            {!user.fav && <Favorites />}
-            {!user.age && <Age />}
-            {!user.gender && <Gender />}
-          <button type='submit'> send </button>
+            {!user.description && (
+              <Description handleChangeDescription={handleChangeDescription} />
+            )}
+            {!user.favs && <Favorites handleCheckedFavs={handleCheckedFavs} />}
+            {!user.age && <Age handleChangeAge={handleChangeAge} />}
+            {!user.gender && <Gender handleChangeGender={handleChangeGender} />}
+            <button type="submit"> send </button>
           </form>
-
         )}
-
       </CardActions>
     </Card>
   );

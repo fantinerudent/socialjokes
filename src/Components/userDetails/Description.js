@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from "@material-ui/core/TextField";
 
 
-const Description = () => {
+const Description = ({handleChangeDescription}) => {
     return (   
         <>
         <TextField
@@ -11,6 +11,7 @@ const Description = () => {
         rows="4"
         variant="outlined"
         label="Description"
+        onBlur={handleChangeDescription}
       />
       </> );
 }

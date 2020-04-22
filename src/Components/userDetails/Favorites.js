@@ -4,51 +4,35 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 
-const Favorites = () => {
-  return (
-    <div>
-      <FormControlLabel
-        control={
-          <Checkbox
-            icon={<FavoriteBorder />}
-            checkedIcon={<Favorite />}
-            name="moms"
-          />
-        }
-        label="Mom's jokes"
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            icon={<FavoriteBorder />}
-            checkedIcon={<Favorite />}
-            name="totos"
-          />
-        }
-        label="Toto's jokes"
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            icon={<FavoriteBorder />}
-            checkedIcon={<Favorite />}
-            name="trump"
-          />
-        }
-        label="Trump's jokes"
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            icon={<FavoriteBorder />}
-            checkedIcon={<Favorite />}
-            name="blonds"
-          />
-        }
-        label="Blonds's jokes"
-      />
-    </div>
-  );
+const Favorites = ({handleCheckedFavs}) => {
+  // console.log('prooops',props.category);
+  
+  const labelList = [
+    { id: 1, category: `Mom's Jokes` },
+    { id: 2, category: `Blond's Jokes` },
+    { id: 3, category: `Trump's Jokes` },
+    { id: 4, category: `Toto's Jokes` },
+  ];
+  
+  const handleCheck = (value) => {
+    handleCheckedFavs(value);
+  };
+
+  return labelList.map((element) => (
+    <FormControlLabel
+      key={element.id}
+      control={
+        <Checkbox
+          label={element.category}
+          category={element.category}
+          onChange={() => {handleCheck(element.category)}}
+          checkedIcon={<Favorite />}
+          icon={<FavoriteBorder />}
+        />
+      }
+      label={element.category}
+    />
+  ));
 };
 
 export default Favorites;

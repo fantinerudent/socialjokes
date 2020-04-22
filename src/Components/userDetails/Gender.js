@@ -2,30 +2,39 @@ import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 
-const Gender = () => {
-  const [gender, setGender] = useState();
+const Gender = ({handleChangeGender}) => {
+  // const [gender, setGender] = useState();
 
-  const handleChange = (event) => {
-    setGender(event.target.value);
-    console.log(gender);
-  };
+  // const handleChange = (event) => {
+  //   event.preventDefault();
+  //   console.log(event.target.value)
+  //   setGender(event.target.value);
+  //   handleChangeGender(gender);
+  // };
 
-  const genders = [
-    { value: "F" },
-    { value: "M" },
-    { value: "NB" },
-    { value: "neutral" },
-  ];
+  // const genders = [
+  //   { value: "F" },
+  //   { value: "M" },
+  //   { value: "NB" },
+  //   { value: "neutral" },
+  // ];
 
   return (
     <>
-      <TextField select value={genders} label="Gender" onChange={handleChange}>
+      {/* <TextField select value={genders} label="Gender" onSelect={handleChange}>
         {genders.map((option) => (
           <MenuItem key={option.value} value={option.value}>
             {option.value}
           </MenuItem>
         ))}
-      </TextField>{" "}
+      </TextField> */}
+      <TextField select defaultValue={'DEFAULT'} label='gender' onChange={handleChangeGender}>
+        <option value="DEFAULT" disabled> Select a gender </option>
+        <option value="F"> F </option>
+        <option value='M'> M</option>
+        <option value='NB'> NB </option>
+        <option value='neutral'> Neutral </option>
+      </TextField>
     </>
   );
 };
