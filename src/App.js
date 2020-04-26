@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root';
 import React, { useState, useMemo } from "react";
 import "./App.css";
 import {
@@ -12,6 +13,7 @@ import Header from "./Components/Header";
 import Register from "./Pages/Register";
 import Profil from "./Pages/Profil";
 import { UserProvider } from "./Contexts/UserContext";
+
 
 function App() {
   // the user object must contain : pseudonyme, name, firstname, email adress, gender, age, password...
@@ -48,4 +50,4 @@ function App() {
   );
 }
 
-export default App;
+export default hot(App);

@@ -16,16 +16,17 @@ import Gender from "./userDetails/Gender";
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: "58vw",
-    margin: "0 auto",
-    minWidth: 275,
+    // position: "relative",  
+    // left: '19vw',
+    // top: '30px',  // margin: "0 auto",
+    // minWidth: 275,
   },
   userData: {
     fontWeight: "bolder",
-    backgroundColor: 'lightblue',
+    textAlign: 'center',
     color: "darkblue",
-    borderRadius: '30px',
-    marginLeft: '10px',
-    paddingRight: '7px'
+    marginLeft: "10px",
+    paddingRight: "7px",
   },
   orange: {
     color: theme.palette.getContrastText(deepOrange[500]),
@@ -49,7 +50,6 @@ const useStyles = makeStyles((theme) => ({
 const CardProfil = () => {
   const { user, setUser } = useContext(UserContext);
   let copyUser = user;
-  console.log('user', user)
 
   const firstLetterPseudonyme = user.pseudonyme.charAt(0);
   const classes = useStyles();
@@ -67,7 +67,7 @@ const CardProfil = () => {
     // console.log('array of favorites',arrayOfFavorites)
     copyUser.description = description;
     copyUser.favs = arrayOfFavorites;
-    console.log("copy user", copyUser);
+
     if (newInformationAdded) {
       if (copyUser) {
         setUser(copyUser);
@@ -121,20 +121,44 @@ const CardProfil = () => {
   return (
     <Card className={classes.root}>
       <CardContent>
-        <Avatar className={classes.orange}> {firstLetterPseudonyme}</Avatar>
+        <Avatar className={classes.purple}> {firstLetterPseudonyme}</Avatar>
         <ul className={classes.title}> MY PROFILE : </ul>
-        <li>
-          my pseudonyme :
-          <span className={classes.userData}> {user.pseudonyme} </span>
-        </li>
-        <li>
-          my password :
-          <span className={classes.userData}> {user.password} </span>
-        </li>
-        <li>
-          my first name :
-          <span className={classes.userData}> {user.firstname} </span>
-        </li>
+        <label style={{ display: "block" }}>
+          Pseudonyme : 
+          <input
+            type="text"
+            disabled
+            className={classes.userData}
+            value={user.pseudonyme}
+          />
+        </label>
+        <label style={{ display: "block" }}>
+          Password :
+          <input
+            type="text"
+            disabled
+            className={classes.userData}
+            value={user.password}
+          />
+        </label>
+        <label style={{ display: "block" }}>
+           My first name :
+          <input
+            type="text"
+            disabled
+            className={classes.userData}
+            value={user.firstname}
+          />
+        </label>
+        <label style={{ display: "block" }}>
+          Pseudonyme
+          <input
+            type="text"
+            disabled
+            className={classes.userData}
+            value={user.pseudonyme}
+          />
+        </label>
         <li>
           my name : <span className={classes.userData}> {user.name} </span>
         </li>
@@ -148,7 +172,7 @@ const CardProfil = () => {
             <span className={classes.userData}> {user.age} </span>
           ) : (
             <span className={classes.information}>
-              you must enter this information{" "}
+              you must enter this information
             </span>
           )}
         </li>
@@ -158,7 +182,7 @@ const CardProfil = () => {
             <span className={classes.userData}> {user.description} </span>
           ) : (
             <span className={classes.information}>
-              {" "}
+              
               you must enter a description
             </span>
           )}
@@ -166,7 +190,10 @@ const CardProfil = () => {
         <li>
           my favs :
           {user.favs ? (
-            <span className={classes.userData}> - {user.favs.map(x =>x + ' - ')} </span>
+            <span className={classes.userData}>
+              
+              - {user.favs.map((x) => x + " - ")}
+            </span>
           ) : (
             <span className={classes.information}>
               you must enter your favs

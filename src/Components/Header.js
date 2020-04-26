@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Typography, IconButton } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import UserContext from "../Contexts/UserContext";
-import {  Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,43 +58,37 @@ const Header = () => {
                 textDecoration: "none",
               }}
             >
-              {" "}
-              Social Jokes{" "}
+              Social Jokes
             </Link>
           </Typography>
           {!isLoggedLocally && (
             <>
               <Link className={classes.LinkButton} color="inherit" to="/login">
-                {" "}
-                Login{" "}
+                Login
               </Link>
               <Link
                 color="inherit"
                 className={classes.LinkButton}
                 to="/register"
               >
-                {" "}
-                Register{" "}
-              </Link>{" "}
+                Register
+              </Link>
             </>
           )}
           {isLoggedLocally && (
             <>
               <span style={{ marginRight: "10px" }}>
-                {" "}
-                {user.pseudonyme} est connecté :{" "}
+                {user.pseudonyme} est connecté :
               </span>
               <span
                 className={classes.LinkButton}
                 color="inherit"
                 onClick={handleClickSignOut}
               >
-                {" "}
-                Sign-out{" "}
+                Sign-out
               </span>
               <Link className={classes.LinkButton} color="inherit" to="/profil">
-                {" "}
-                mon profil{" "}
+                mon profil
               </Link>
             </>
           )}

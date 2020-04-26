@@ -66,8 +66,8 @@ const FormPasswordForgotten = () => {
           color="primary"
           type="submit"
         >
-          {" "}
-          SEND{" "}
+          
+          SEND
         </Button>
         {mailSent && <Link style={{display: "block", margin:"10px"}} to="/"> BACK TO HOME</Link>}
         {message && (

@@ -161,8 +161,8 @@ const FormRegister = () => {
             color="primary"
             type="submit"
           >
-            {" "}
-            Envoyer{" "}
+            
+            Envoyer
           </Button>
           {error && <div style={{ color: "red" }}> {errorMessage} </div>}
         </div>
