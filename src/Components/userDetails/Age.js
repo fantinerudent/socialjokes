@@ -1,16 +1,26 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-// label: {
-//   fontStyle: "oblique",
-//   marginBottom: 10,
-//   display: "table-caption",
-//   paddingLeft: 10,
-// },
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(() => ({
+  label: {
+    fontStyle: "oblique",
+    marginBottom: 10,
+    display: "flex",
+    paddingLeft: 10,
+  },
+}));
+
 const Age = ({ handleChangeAge }) => {
+  const classes = useStyles();
   return (
-    <label> My age: 
-      <TextField type="number" label="Age" onChange={handleChangeAge} />
-    </label>
+    <div style={{margin:20}}>
+      <label className={classes.label}>
+        {" "}
+        My age:
+        <TextField type="number" label="Age" onChange={handleChangeAge} />
+      </label>
+    </div>
   );
 };
 

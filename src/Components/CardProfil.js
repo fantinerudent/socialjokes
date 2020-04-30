@@ -2,9 +2,7 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 import UserContext from "../Contexts/UserContext";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import { deepOrange, deepPurple } from "@material-ui/core/colors";
@@ -16,24 +14,33 @@ import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     border: "solid #e0e0e0",
     marginLeft: "12vw",
     padding: 20,
     borderRadius: 30,
   },
+  button: {
+    marginLeft: "auto",
+    marginRight: "auto",
+    display: "block",
+    border: "1px solid #bbdefb",
+  },
+  none: { display: "none" },
   label: {
     fontStyle: "oblique",
     marginBottom: 10,
     display: "table-caption",
     paddingLeft: 10,
   },
-  newform:{
-    backgroundColor:'red',
+  newform: {
+    backgroundColor: "#eceff1",
+    padding: 20,
+    borderRadius: 10,
   },
   userData: {
     fontWeight: "bolder",
-    border: 'solid 2px #bbdefb',
+    border: "solid 2px #bbdefb",
     backgroundColor: "white",
     borderRadius: 7,
     padding: 5,
@@ -48,10 +55,10 @@ const useStyles = makeStyles((theme) => ({
   purple: {
     color: theme.palette.getContrastText(deepPurple[500]),
     backgroundColor: deepPurple[500],
-    height:70,
-    width:70,
+    height: 70,
+    width: 70,
     left: "8vw",
-    margin: '10px 0px 30px 0px',
+    margin: "10px 0px 30px 0px",
   },
   information: {
     color: "blue",
@@ -72,6 +79,8 @@ const CardProfil = () => {
   const [errorMessage, setNewMessageError] = useState();
   const [messageToShow, setMessageToShow] = useState();
   const [description, setDescription] = useState();
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const [buttonSend, setButtonSend] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -135,16 +144,11 @@ const CardProfil = () => {
           display: "flex",
           width: "100%",
           alignContext: "stretch",
-          flexDirection: "column",
         }}
-      >
-        {/* <Box alignContent="stretch">
-          <Avatar className={classes.purple}> {firstLetterPseudonyme}</Avatar>
-        </Box> */}
-      </div>
-      <div style={{ display: "flex" }}>
+      ></div>
+      <div style={{ display: "flex", flexDirection: "row" }}>
         <Box style={{ width: "50%" }}>
-        <Avatar className={classes.purple}> {firstLetterPseudonyme}</Avatar>
+          <Avatar className={classes.purple}> {firstLetterPseudonyme}</Avatar>
           <label className={classes.label}>
             Pseudonyme :
             <input
@@ -182,7 +186,7 @@ const CardProfil = () => {
             />
           </label>
         </Box>
-        <Box style={{ width: "50%" }}>
+        <Box style={{ width: "50%" }} alignSelf="flex-end">
           <label className={classes.label}>
             My email adress :
             <input
@@ -254,43 +258,56 @@ const CardProfil = () => {
             )}
           </label>
         </Box>
-        <Box alignContent="stretch" width='100%'>
-          <CardActions>
-            {error && <span> {errorMessage} </span>}
-            {message && <span> {messageToShow} </span>}
-            {(!user.description ||
-              !user.favs ||
-              !user.age ||
-              !user.gender) && (
-                <Button
-                  size="small"
-                  onClick={() => {
-                    setOpenOptions(true);
-                  }}
-                >
-                  Update my informations
-                </Button>
-              )}
-            {openOptions && (
-              <form onSubmit={handleSubmit} className={classes.newform} autoComplete="off">
-                {!user.description && (
-                  <Description
-                    handleChangeDescription={handleChangeDescription}
-                  />
-                )}
-                {!user.favs && (
-                  <Favorites handleCheckedFavs={handleCheckedFavs} />
-                )}
-                {!user.age && <Age handleChangeAge={handleChangeAge} />}
-                {!user.gender && (
-                  <Gender handleChangeGender={handleChangeGender} />
-                )}
-                <button type="submit"> send </button>
-              </form>
-            )}
-          </CardActions>
-          </Box>
       </div>
+      <Box width="100%">
+        <CardActions>
+          {error && <span> {errorMessage} </span>}
+          {message && <span> {messageToShow} </span>}
+          {(!user.description || !user.favs || !user.age || !user.gender) &&
+            !buttonClicked && (
+              <Button
+                className={classes.button}
+                size="small"
+                onClick={() => {
+                  setOpenOptions(true);
+                  setButtonClicked(true);
+                }}
+              >
+                Update my informations
+              </Button>
+            )}
+          {openOptions && (
+            <form
+              onSubmit={handleSubmit}
+              className={classes.newform}
+              autoComplete="off"
+            >
+              {!user.description && (
+                <Description
+                  handleChangeDescription={handleChangeDescription}
+                />
+              )}
+              {!user.favs && (
+                <Favorites handleCheckedFavs={handleCheckedFavs} />
+              )}
+              {!user.age && <Age handleChangeAge={handleChangeAge} />}
+              {!user.gender && (
+                <Gender handleChangeGender={handleChangeGender} />
+              )}
+              <Button
+                className={buttonSend ? classes.none : classes.button}
+                type="submit"
+                onClick={() => {
+                  setButtonSend(true);
+                }}
+              >
+                {" "}
+                send{" "}
+              </Button>
+            </form>
+          )}
+        </CardActions>
+      </Box>
     </div>
   );
 };

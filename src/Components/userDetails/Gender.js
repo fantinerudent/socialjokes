@@ -1,8 +1,20 @@
 import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
+import { makeStyles } from "@material-ui/core/styles";
 
-const Gender = ({handleChangeGender}) => {
+const useStyles = makeStyles(() => ({
+  label: {
+    fontStyle: "oblique",
+    marginBottom: 10,
+    marginRight:30,
+    display: "flex",
+    paddingLeft: 10,
+  },
+}));
+
+const Gender = ({ handleChangeGender }) => {
+  const classes = useStyles();
   // const [gender, setGender] = useState();
 
   // const handleChange = (event) => {
@@ -20,7 +32,7 @@ const Gender = ({handleChangeGender}) => {
   // ];
 
   return (
-    <>
+    <div style={{margin:20, display:'flex'}}>
       {/* <TextField select value={genders} label="Gender" onSelect={handleChange}>
         {genders.map((option) => (
           <MenuItem key={option.value} value={option.value}>
@@ -28,14 +40,24 @@ const Gender = ({handleChangeGender}) => {
           </MenuItem>
         ))}
       </TextField> */}
-      <TextField select defaultValue={'DEFAULT'} label='gender' onChange={handleChangeGender}>
-        <option value="DEFAULT" disabled> Select a gender </option>
-        <option value="F"> F </option>
-        <option value='M'> M</option>
-        <option value='NB'> NB </option>
-        <option value='neutral'> Neutral </option>
-      </TextField>
-    </>
+      <label className={classes.label}>
+        My gender : </label>
+        <TextField
+          select
+          defaultValue={"DEFAULT"}
+          onChange={handleChangeGender}
+        >
+          <option value="DEFAULT" disabled>
+            {" "}
+            Select a gender{" "}
+          </option>
+          <option value="F"> F </option>
+          <option value="M"> M</option>
+          <option value="NB"> NB </option>
+          <option value="neutral"> Neutral </option>
+        </TextField>
+     
+    </div>
   );
 };
 
