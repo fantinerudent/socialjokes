@@ -13,11 +13,14 @@ app.use(express.static(path.join(__dirname, 'routes')));
 
 
 const users = require('./routes/users');
+const friends = require('./routes/friends');
 
 // for every calls made to the /users, I want to use the file users.js .
 app.use('/users', users)
 // for every calls made to the /chat, I want to use the file chat.js .
 // app.use('/chat', chat);
+// for every calls made to the /friends, I want to use the file friends.js .
+app.use('/friends', friends)
 
 
 app.listen(process.env.PORT || 8080 , console.log(" --> serveur connecté au port 8080 <-- "));

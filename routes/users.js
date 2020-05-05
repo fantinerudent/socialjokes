@@ -1,7 +1,7 @@
 // creator of a unique id;
 const { v4: uuidv4 } = require("uuid");
 
-//
+// handling of the environnement
 require("dotenv").config();
 
 const express = require("express");
@@ -45,6 +45,8 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
 });
 
+//middlewares
+
 // Une route post login
 route.post("/login", (req, res) => {
   response.userData = {
@@ -73,6 +75,7 @@ route.post("/login", (req, res) => {
             response.error = false;
             response.isLogged = true;
             response.userData = {
+              isAdministrator: informationsUser.administrator,
               pseudonyme: informationsUser.pseudonyme,
               password: informationsUser.password,
               favs: informationsUser.favs,
@@ -162,7 +165,7 @@ route.post("/userdetails", (req, res) => {
     }
     let db = client.db("social_jokes");
     let collection = db.collection("users");
-    console.log('userDataAdding', userDataAdding)
+    console.log("userDataAdding", userDataAdding);
     collection
       .findOneAndUpdate(
         { pseudonyme: req.body.pseudonyme },
@@ -177,19 +180,21 @@ route.post("/userdetails", (req, res) => {
       )
       .then((result) => {
         if (!result.value) {
-          console.log('profile not updated')
+          console.log("profile not updated");
           response.errorMessage = "something went wrong";
           response.error = true;
           res.json(response);
-         
         } else {
-          console.log("update ok!")
+          console.log("update ok!");
           response.error = false;
           response.message = true;
           response.messageToShow = " Your profile has been updated ! ";
-          res.json(response)
+          res.json(response);
         }
-      }).catch((err)=> {console.log(err)}) ;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   });
 });
 

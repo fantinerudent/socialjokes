@@ -66,8 +66,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CardProfil = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, isAdmin } = useContext(UserContext);
   let copyUser = user;
+  console.log(isAdmin, 'is admin?')
 
   const firstLetterPseudonyme = user.pseudonyme.charAt(0);
   const classes = useStyles();
@@ -94,7 +95,6 @@ const CardProfil = () => {
         axios
           .post("/users/userdetails", copyUser)
           .then((response) => {
-            console.log(response);
             hasError(response.data.error);
             setNewMessageError(response.data.errorMessage);
             hasMessage(response.data.message);
@@ -138,7 +138,7 @@ const CardProfil = () => {
   };
 
   return (
-    <div className={classes.root} style={{ width: "50vw" }}>
+    <div className={classes.root} style={{ backgroundColor: isAdmin ? 'blue' : 'grey', width: "50vw" }}>
       <div
         style={{
           display: "flex",

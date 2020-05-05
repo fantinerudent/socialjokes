@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 
 const FormLogin = () => {
   // Use of the context.
-  const { setUser, setIsLogged, isLogged } = useContext(UserContext);
+  const { setUser, setIsLogged, isLogged, setIsAdmin } = useContext(UserContext);
 
   const classes = useStyles();
 
@@ -57,10 +57,12 @@ const FormLogin = () => {
     axios
       .post("/users/login", userData)
       .then((response) => {
+        console.log(response)
         hasError(response.data.error);
         setNewMessageError(response.data.errorMessage);
         setUser(response.data.userData);
         setIsLogged(response.data.isLogged);
+        setIsAdmin(response.data.userData.isAdministrator)
       })
       .catch((err) => {
         console.error(err);
