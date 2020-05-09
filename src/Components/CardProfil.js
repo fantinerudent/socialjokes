@@ -68,7 +68,6 @@ const useStyles = makeStyles((theme) => ({
 const CardProfil = () => {
   const { user, setUser, isAdmin } = useContext(UserContext);
   let copyUser = user;
-  console.log(isAdmin, 'is admin?')
 
   const firstLetterPseudonyme = user.pseudonyme.charAt(0);
   const classes = useStyles();

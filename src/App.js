@@ -1,4 +1,4 @@
-import { hot } from 'react-hot-loader/root';
+import { hot } from "react-hot-loader/root";
 import React, { useState, useMemo } from "react";
 import "./App.css";
 import {
@@ -9,13 +9,12 @@ import {
 } from "react-router-dom";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
-import Header from "./Components/Header";
+import Header from "./Components/Header/Header";
 import Register from "./Pages/Register";
 import Profil from "./Pages/Profil";
 import FriendslistAdmin from "./Pages/FriendslistAdmin.js";
 import FriendslistUser from "./Pages/FriendslistUser";
 import { UserProvider } from "./Contexts/UserContext";
-
 
 function App() {
   // the user object must contain : pseudonyme, name, firstname, email adress, gender, age, password...
@@ -49,11 +48,10 @@ function App() {
             {!isLogged && <Redirect to="/" />}
           </Route>
           <Route path="/friendslist">
-            {isAdmin && <FriendslistAdmin />}
+            {isAdmin && isLogged && <FriendslistAdmin />}
             {isLogged && <FriendslistUser />}
             {/* {!isLogged && <Redirect to="/" />} */}
           </Route>
-
         </Switch>
       </Router>
     </UserProvider>

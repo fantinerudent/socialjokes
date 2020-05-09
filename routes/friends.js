@@ -17,8 +17,13 @@ route.get('/friendslistadmin', (req,res) => {
         }
         let db = client.db("social_jokes");
         let collection = db.collection("users");
-        let prout = collection.find();
-        console.log(prout)
+        collection.find().toArray((err,result) => {
+            if(err){
+                console.log(err)
+            } else {
+                return res.json(result);
+            }
+        });
     })
     // res.send()
 })

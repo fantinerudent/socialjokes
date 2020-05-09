@@ -33,13 +33,6 @@ const Gender = ({ handleChangeGender }) => {
 
   return (
     <div style={{margin:20, display:'flex'}}>
-      {/* <TextField select value={genders} label="Gender" onSelect={handleChange}>
-        {genders.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.value}
-          </MenuItem>
-        ))}
-      </TextField> */}
       <label className={classes.label}>
         My gender : </label>
         <TextField

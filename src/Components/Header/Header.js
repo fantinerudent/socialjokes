@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Typography, IconButton } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
-import UserContext from "../Contexts/UserContext";
+import UserContext from "../../Contexts/UserContext";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,12 +28,15 @@ const Header = () => {
 
   const { user, isLogged, setIsLogged } = useContext(UserContext);
 
+  console.log("render du Header," , isLogged)
+
   //usage of the context to know if the user is logged.
 
   localStorage.setItem("isLogged", isLogged);
   const isLoggedLocally = JSON.parse(localStorage.getItem("isLogged"));
 
   const handleClickSignOut = (event) => {
+    event.preventDefault();
     setIsLogged(false);
   };
 

@@ -7,9 +7,6 @@ const FriendslistUser = () => {
 
     let friends;
 
-    // Axios.get('/friends/friendslistadmin', user.pseudonyme).then((response) => {
-    //     console.log(response)
-    // })
 
     return (
         <div>cooucou</div>
