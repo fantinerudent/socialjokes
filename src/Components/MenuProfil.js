@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -16,12 +16,22 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     width: "100%",
     maxWidth: 100,
-
   },
   blue: {
     color: "white",
     backgroundColor: "#3f51b5",
     borderRadius: "10px",
+  },
+  link: {
+    cursor: "pointer",
+    textDecoration: "none",
+    color: "white",
+    display: "flex",
+    marginTop: 10,
+    marginBottom:10,
+  },
+  icon: {
+    marginLeft: 10,
   },
 }));
 
@@ -42,35 +52,24 @@ const MenuProfil = () => {
         className={classes.blue}
         aria-label="mailbox folders"
       >
-        <ListItem
-          button
-          divider
-          onClick={() => {
-            routeChange("/mywall");
-          }}
-        >
-          <ListItemText primary="My wall" /> <PersonOutlineIcon />
+        <ListItem button divider>
+          <Link to="/friendslist" className={classes.link}>
+            My friends list
+            <PeopleOutlineIcon className={classes.icon} />
+          </Link>
         </ListItem>
-        <Divider />
-        <ListItem
-          button
-          onClick={() => {
-            setIsLogged(false);
-            routeChange("/friendslist");
-          }}
-        >
-          <ListItemText primary="My friends list"/> <PeopleOutlineIcon style={{marginLeft:10}} />
+        {/* <Divider /> */}
+        <ListItem button divider>
+          <Link to="/mywall" className={classes.link}>
+            {" "}
+            My Wall <PersonOutlineIcon style={{marginLeft: 53}} />
+          </Link>
         </ListItem>
-        <Divider />
-        <ListItem
-          button
-          divider
-          onClick={() => {
-            routeChange("/inbox");
-          }}
-        >
-          <ListItemText primary="Inbox" />
-          <MailOutlineIcon />
+        {/* <Divider /> */}
+        <ListItem button divider>
+          <Link className={classes.link} to="/inbox ">
+            Inbox <MailOutlineIcon style={{marginLeft: 70}} />
+          </Link>
         </ListItem>
         <ListItem
           button
@@ -79,7 +78,7 @@ const MenuProfil = () => {
             routeChange("/");
           }}
         >
-          <ListItemText primary='Log-out'/> 
+          <ListItemText primary="Log-out" />
           <ExitToAppIcon />
         </ListItem>
       </List>

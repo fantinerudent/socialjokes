@@ -1,11 +1,8 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Axios from "axios";
-import UserContext from "../Contexts/UserContext";
 
 const FriendslistAdmin = () => {
-  const { user, setUser, isAdmin, isLogged } = useContext(UserContext);
-  const [friends, setFriendsList] = useState();
- console.log("is logged?", isLogged);
+  const [friends, setFriendsList] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,6 +16,7 @@ const FriendslistAdmin = () => {
 
   return (
     <div>
+      tralala
       {friends &&
         friends.map((element) => (
           <div
