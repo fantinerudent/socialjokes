@@ -1,26 +1,42 @@
-
-const express = require('express');
-const bodyParser = require('body-parser');
+const express = require("express");
+const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
 const path = require("path");
+const expressSession = require("express-session");
+
+const ONE_HOUR = 1000 * 60 * 60;
+const SESSION_lifeTime = ONE_HOUR;
+
+const session = {
+  name: "sid",
+  cookie: {
+    maxAge: SESSION_lifeTime,
+  },
+  rolling: true,
+  secret: "Alawaléguainbistouly",
+  saveUninitialized: true,
+  resave: false,
+};
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({extended: false}))
-app.use(express.static(path.join(__dirname, 'routes')));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "routes")));
 
+app.use(expressSession(session));
 
-
-const users = require('./routes/users');
-const friends = require('./routes/friends');
+const users = require("./routes/users");
+const friends = require("./routes/friends");
 
 // for every calls made to the /users, I want to use the file users.js .
-app.use('/users', users)
+app.use("/users", users);
 // for every calls made to the /chat, I want to use the file chat.js .
 // app.use('/chat', chat);
 // for every calls made to the /friends, I want to use the file friends.js .
-app.use('/friends', friends)
+app.use("/friends", friends);
 
-
-app.listen(process.env.PORT || 8080 , console.log(" --> serveur connecté au port 8080 <-- "));
+app.listen(
+  process.env.PORT || 8080,
+  console.log(" --> serveur connecté au port 8080 <-- ")
+);

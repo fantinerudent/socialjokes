@@ -1,18 +1,19 @@
 
 module.exports = {
-  isThisUserAdmin: function (req, res, next) {
-    console.log("middleware isadmin");
-    if (!req.session.isAdmin) {
-      console.log("the user is admin");
-      // res.json(response);
-    } else {
-      console.log("not admin");
-      next();
-    }
+  isThisUserAdmin:  function (req, res, next) {
+      if (!req.session.userData.isAdministrator) {
+        console.log("the user is  not admin");
+      } else {
+        console.log(" the user is admin");
+        next();
+      }
+    },
+    isThisUserLogged : function(req, res, next) {
+      if (!req.session.userData.isLogged) {
+        console.log("the user isnt logged");
+      } else {
+        next();
+      }
   },
-  // isThisUserLogged : function(req,) {
-
-  // }
 };
 
-// export default isThisUserAdmin;

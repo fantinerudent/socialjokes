@@ -57,8 +57,6 @@ const FormLogin = () => {
     axios
       .post("/users/login", userData)
       .then((response) => {
-        console.log(response)
-        // req.session.userData=response.data.userData;
         hasError(response.data.error);
         setNewMessageError(response.data.errorMessage);
         setUser(response.data.userData);
