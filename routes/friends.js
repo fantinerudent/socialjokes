@@ -1,3 +1,9 @@
+const isThisUserAdmin = require('./middlewares');
+
+// console.log(isThisUserAdmin);
+// const prout = require("./middlewares/isThisUserAdmin");
+// console.log(prout)
+
 const express = require("express");
 const route = express.Router();
 const MongoClient = require("mongodb").MongoClient;
@@ -10,7 +16,8 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
 });
 
-route.get('/friendslistadmin', (req,res) => {
+// router.post('/:userId/verify', isUserAuthenticated, (req, res, next) => {
+route.get('/friendslistadmin', isThisUserAdmin.isThisUserAdmin, (req,res,next) => {
     client.connect((err)=> {
         if (err) {
             console.log(err)
@@ -27,5 +34,9 @@ route.get('/friendslistadmin', (req,res) => {
     })
     // res.send()
 })
+
+// route.delete('/friendslistadmin', (req,res) => {
+
+// })
 
 module.exports = route;

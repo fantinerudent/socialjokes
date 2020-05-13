@@ -7,6 +7,23 @@ require("dotenv").config();
 const express = require("express");
 const route = express.Router();
 const MongoClient = require("mongodb").MongoClient;
+const expressSession = require("express-session");
+
+const ONE_HOUR = 1000 * 60 * 60;
+const SESSION_lifeTime = ONE_HOUR;
+const session = {
+  name: "sid",
+  cookie: {
+    maxAge: SESSION_lifeTime
+  },
+  rolling: true,
+  secret: "Alawaléguainbistouly",
+  saveUninitialized: true,
+  resave: false
+};
+
+route.use(expressSession(session));
+
 // link to the database.
 const uri =
   "mongodb+srv://frudent:toLi62tL7wdlali3@cluster0-3woch.mongodb.net/test?retryWrites=true&w=majority";
@@ -45,10 +62,11 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
 });
 
-//middlewares
+
 
 // Une route post login
 route.post("/login", (req, res) => {
+
   response.userData = {
     pseudonyme: req.body.pseudonyme,
     password: req.body.password,
@@ -86,6 +104,7 @@ route.post("/login", (req, res) => {
               age: informationsUser.age,
               email: informationsUser.email,
             };
+            req.session.userData= response.userData;
             res.json(response);
           } else {
             response.errorMessage = "password incorrect";

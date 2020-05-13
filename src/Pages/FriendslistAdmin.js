@@ -16,11 +16,10 @@ const FriendslistAdmin = () => {
 
   return (
     <div>
-      tralala
       {friends &&
         friends.map((element) => (
           <div
-            style={{ width: "fit-content", backgroundColor: "yellow" }}
+            style={{ width: "fit-content", margin:30, backgroundColor: "yellow" }}
             key={element.id}
           >
             <span> PSEUDONYME : {element.pseudonyme} </span>
