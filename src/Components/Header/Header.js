@@ -91,7 +91,7 @@ const Header = () => {
                 Sign-out
               </span>
               <Link className={classes.LinkButton} color="inherit" to="/profil">
-                mon profil
+                My Profile 
               </Link>
             </>
           )}

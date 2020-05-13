@@ -88,7 +88,6 @@ route.post("/login", (req, res) => {
               isLogged : true,
             };
             req.session.userData= response.userData;
-            console.log('req. session form loggin=> ', req.session)
             res.json(response);
           } else {
             response.errorMessage = "password incorrect";
@@ -108,6 +107,8 @@ route.post("/register", (req, res) => {
     email: req.body.email,
     name: req.body.name,
     firstname: req.body.firstname,
+    isLogged: true,
+    isAdmin: false
   };
   client.connect((err) => {
     if (err) {
@@ -122,6 +123,8 @@ route.post("/register", (req, res) => {
           console.log(err);
         }
         if (!result.length) {
+          req.session.userData= response.userData;
+          console.log('req session register => ', req.session)
           let insertion = {};
           insertion.pseudonyme = req.body.pseudonyme;
           insertion.password = req.body.password;
