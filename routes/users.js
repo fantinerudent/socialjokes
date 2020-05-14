@@ -1,3 +1,23 @@
+const middlewares = require("./middlewares");
+const multer = require("multer");
+const path = require("path");
+
+//set storage engine (multer)
+const storage = multer.diskStorage({
+  destination: "../public/uploads/",
+  filename: function (req, file, callback) {
+    callback(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
+//Init upload:
+const upload = multer({
+  storage: storage,
+}).single("avatar");
+
 // creator of a unique id;
 const { v4: uuidv4 } = require("uuid");
 
@@ -48,7 +68,6 @@ const client = new MongoClient(uri, {
 
 // Une route post login
 route.post("/login", (req, res) => {
-
   response.userData = {
     pseudonyme: req.body.pseudonyme,
     password: req.body.password,
@@ -85,9 +104,9 @@ route.post("/login", (req, res) => {
               gender: informationsUser.gender,
               age: informationsUser.age,
               email: informationsUser.email,
-              isLogged : true,
+              isLogged: true,
             };
-            req.session.userData= response.userData;
+            req.session.userData = response.userData;
             res.json(response);
           } else {
             response.errorMessage = "password incorrect";
@@ -108,7 +127,7 @@ route.post("/register", (req, res) => {
     name: req.body.name,
     firstname: req.body.firstname,
     isLogged: true,
-    isAdmin: false
+    isAdmin: false,
   };
   client.connect((err) => {
     if (err) {
@@ -123,8 +142,8 @@ route.post("/register", (req, res) => {
           console.log(err);
         }
         if (!result.length) {
-          req.session.userData= response.userData;
-          console.log('req session register => ', req.session)
+          req.session.userData = response.userData;
+          console.log("req session register => ", req.session);
           let insertion = {};
           insertion.pseudonyme = req.body.pseudonyme;
           insertion.password = req.body.password;
@@ -147,7 +166,7 @@ route.post("/register", (req, res) => {
   });
 });
 
-route.post("/userdetails", (req, res) => {
+route.post("/update/userdetails", (req, res) => {
   let userDataAdding = {
     pseudonyme: req.body.pseudonyme,
   };
@@ -163,7 +182,6 @@ route.post("/userdetails", (req, res) => {
   if (req.body.gender) {
     userDataAdding.gender = req.body.gender;
   }
-  console.log(userDataAdding);
   response.userDataAdding = userDataAdding;
   client.connect((err) => {
     if (err) {
@@ -249,6 +267,39 @@ route.post("/passwordforgotten", (req, res) => {
           );
         }
       });
+  });
+});
+
+route.delete(
+  "/delete/:pseudonyme",
+  middlewares.isThisUserAdmin,
+  (req, res, next) => {
+    let pseudonyme = req.params.pseudonyme;
+    console.log("delete pseudo ", pseudonyme);
+    client.connect((err) => {
+      let response = {};
+      if (err) {
+        console.log(err);
+      }
+      let db = client.db("social_jokes");
+      let collection = db.collection("users");
+      collection.deleteOne({ pseudonyme: pseudonyme }).catch((err) => {
+        console.log(err);
+      });
+      response.message = `the user ${pseudonyme} has been deleted`;
+      res.json(response);
+    });
+  }
+);
+
+route.post("/upload", middlewares.isThisUserLogged, ( req, res, err) => {
+  console.log(req.body.avatar)
+  upload(req, res, (err) => {
+    if (err) {
+      console.log('Error : ', err);
+    } else {
+      console.log('req file => ', req.file);
+    }
   });
 });
 

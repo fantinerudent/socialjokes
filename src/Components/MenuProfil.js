@@ -4,7 +4,6 @@ import { useHistory, Link } from "react-router-dom";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import Divider from "@material-ui/core/Divider";
 import UserContext from "../Contexts/UserContext";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -28,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     display: "flex",
     marginTop: 10,
-    marginBottom:10,
+    marginBottom: 10,
   },
   icon: {
     marginLeft: 10,
@@ -36,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MenuProfil = () => {
-  const { setIsLogged } = useContext(UserContext);
+  const { setIsLogged, isAdmin } = useContext(UserContext);
   let history = useHistory();
 
   let routeChange = (newpath) => {
@@ -54,21 +53,18 @@ const MenuProfil = () => {
       >
         <ListItem button divider>
           <Link to="/friendslist" className={classes.link}>
-            My friends list
+            {isAdmin ? "Users" : "My friends list"}
             <PeopleOutlineIcon className={classes.icon} />
           </Link>
         </ListItem>
-        {/* <Divider /> */}
         <ListItem button divider>
           <Link to="/mywall" className={classes.link}>
-            {" "}
-            My Wall <PersonOutlineIcon style={{marginLeft: 53}} />
+            My Wall <PersonOutlineIcon style={{ marginLeft: 53 }} />
           </Link>
         </ListItem>
-        {/* <Divider /> */}
         <ListItem button divider>
           <Link className={classes.link} to="/inbox ">
-            Inbox <MailOutlineIcon style={{marginLeft: 70}} />
+            Inbox <MailOutlineIcon style={{ marginLeft: 70 }} />
           </Link>
         </ListItem>
         <ListItem

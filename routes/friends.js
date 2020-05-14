@@ -33,20 +33,20 @@ route.get("/friendslistadmin", middlewares.isThisUserAdmin, (req, res, next) => 
   });
 });
 
-route.delete('/friendslistadmin/:pseudonyme', middlewares.isThisUserAdmin, (req,res, next) => {
-  let pseudonyme = req.params.pseudonyme;
-  console.log('delete pseudo ',  pseudonyme)
-  client.connect((err) => {
-    let response = {};
-    if (err) {
-      console.log(err);
-    }
-    let db = client.db("social_jokes");
-    let collection = db.collection("users");
-    collection.deleteOne({pseudonyme: pseudonyme}).catch(err => {console.log(err)});
-    response.message = `the user ${pseudonyme} has been deleted`;
-    res.json(response);
-  })
-})
+// route.delete('/friendslistadmin/:pseudonyme', middlewares.isThisUserAdmin, (req,res, next) => {
+//   let pseudonyme = req.params.pseudonyme;
+//   console.log('delete pseudo ',  pseudonyme)
+//   client.connect((err) => {
+//     let response = {};
+//     if (err) {
+//       console.log(err);
+//     }
+//     let db = client.db("social_jokes");
+//     let collection = db.collection("users");
+//     collection.deleteOne({pseudonyme: pseudonyme}).catch(err => {console.log(err)});
+//     response.message = `the user ${pseudonyme} has been deleted`;
+//     res.json(response);
+//   })
+// })
 
 module.exports = route;

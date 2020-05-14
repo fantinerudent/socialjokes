@@ -19,7 +19,7 @@ const FriendslistAdmin = () => {
     event.preventDefault();
     console.log("clicked => ", pseudonyme);
     pseudonymeUserToDelete = pseudonyme;
-    Axios.delete(`/friends/friendslistadmin/${pseudonymeUserToDelete}`)
+    Axios.delete(`/users/delete/${pseudonymeUserToDelete}`)
       .then((response) => {
         setMessageToDisplay(response.data.message);
       })
