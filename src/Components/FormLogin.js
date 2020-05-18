@@ -57,12 +57,11 @@ const FormLogin = () => {
     axios
       .post("/users/login", userData)
       .then((response) => {
-        console.log(response)
         hasError(response.data.error);
         setNewMessageError(response.data.errorMessage);
         setUser(response.data.userData);
         setIsLogged(response.data.isLogged);
-        setIsAdmin(response.data.userData.isAdministrator)
+        setIsAdmin(response.data.userData.isAdministrator);
       })
       .catch((err) => {
         console.error(err);

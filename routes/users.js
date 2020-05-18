@@ -1,3 +1,33 @@
+const middlewares = require("./middlewares");
+const multer = require("multer");
+const path = require("path");
+
+// //set storage engine (multer)
+const storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, "public/uploads");
+  },
+  filename: function (req, file, callback) {
+    callback(
+      null,
+      file.fieldname +
+        "-" +
+        Date.now() +
+        "-" +
+        req.session.userData.pseudonyme +
+        path.extname(file.originalname)
+    );
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  onError: function (err, next) {
+    console.log("error", err);
+    next(err);
+  },
+});
+
 // creator of a unique id;
 const { v4: uuidv4 } = require("uuid");
 
@@ -7,6 +37,7 @@ require("dotenv").config();
 const express = require("express");
 const route = express.Router();
 const MongoClient = require("mongodb").MongoClient;
+
 // link to the database.
 const uri =
   "mongodb+srv://frudent:toLi62tL7wdlali3@cluster0-3woch.mongodb.net/test?retryWrites=true&w=majority";
@@ -44,8 +75,6 @@ const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-
-//middlewares
 
 // Une route post login
 route.post("/login", (req, res) => {
@@ -85,7 +114,12 @@ route.post("/login", (req, res) => {
               gender: informationsUser.gender,
               age: informationsUser.age,
               email: informationsUser.email,
+              isLogged: true,
             };
+            if (informationsUser.avatar) {
+              response.userData.avatar = informationsUser.avatar;
+            }
+            req.session.userData = response.userData;
             res.json(response);
           } else {
             response.errorMessage = "password incorrect";
@@ -105,6 +139,8 @@ route.post("/register", (req, res) => {
     email: req.body.email,
     name: req.body.name,
     firstname: req.body.firstname,
+    isLogged: true,
+    isAdmin: false,
   };
   client.connect((err) => {
     if (err) {
@@ -119,6 +155,8 @@ route.post("/register", (req, res) => {
           console.log(err);
         }
         if (!result.length) {
+          req.session.userData = response.userData;
+          console.log("req session register => ", req.session);
           let insertion = {};
           insertion.pseudonyme = req.body.pseudonyme;
           insertion.password = req.body.password;
@@ -141,7 +179,7 @@ route.post("/register", (req, res) => {
   });
 });
 
-route.post("/userdetails", (req, res) => {
+route.post("/update/userdetails", (req, res) => {
   let userDataAdding = {
     pseudonyme: req.body.pseudonyme,
   };
@@ -157,7 +195,7 @@ route.post("/userdetails", (req, res) => {
   if (req.body.gender) {
     userDataAdding.gender = req.body.gender;
   }
-  console.log(userDataAdding);
+
   response.userDataAdding = userDataAdding;
   client.connect((err) => {
     if (err) {
@@ -242,6 +280,68 @@ route.post("/passwordforgotten", (req, res) => {
             }
           );
         }
+      });
+  });
+});
+
+route.delete(
+  "/delete/:pseudonyme",
+  middlewares.isThisUserAdmin,
+  (req, res, next) => {
+    let pseudonyme = req.params.pseudonyme;
+    console.log("delete pseudo ", pseudonyme);
+    client.connect((err) => {
+      let response = {};
+      if (err) {
+        console.log(err);
+      }
+      let db = client.db("social_jokes");
+      let collection = db.collection("users");
+      collection.deleteOne({ pseudonyme: pseudonyme }).catch((err) => {
+        console.log(err);
+      });
+      response.message = `the user ${pseudonyme} has been deleted`;
+      res.json(response);
+    });
+  }
+);
+
+route.post("/upload", upload.single("avatar"), (req, res, next) => {
+  console.log(req.session);
+  let response = {};
+  // response.message = "your image was uploaded";
+  response.avatar = req.file.filename;
+  client.connect((err) => {
+    if (err) {
+      console.log(err);
+    }
+    let db = client.db("social_jokes");
+    let collection = db.collection("users");
+    collection
+      .findOneAndUpdate(
+        { pseudonyme: req.session.userData.pseudonyme },
+        {
+          $set: {
+            avatar: "uploads/" + response.avatar,
+          },
+        }
+      )
+      .then((result) => {
+        if (!result.value) {
+          console.log("profile not updated");
+          response.errorMessage = "something went wrong";
+          response.error = true;
+          res.json(response);
+        } else {
+          console.log("update ok!");
+          response.error = false;
+          response.message = true;
+          response.messageToShow = " Your profile has been updated ! ";
+          res.json(response);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
       });
   });
 });
