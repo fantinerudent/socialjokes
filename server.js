@@ -23,6 +23,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "routes")));
+app.use('./public/uploads', express.static("uploads"))
 
 app.use(expressSession(session));
 

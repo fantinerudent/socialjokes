@@ -68,8 +68,9 @@ const useStyles = makeStyles((theme) => ({
 const CardProfil = () => {
   const { user, setUser, isAdmin } = useContext(UserContext);
   let copyUser = user;
-  let bodyFromUploadFile = new FormData();
-  
+
+  console.log(user);
+
   const firstLetterPseudonyme = user.pseudonyme.charAt(0);
   const classes = useStyles();
   const [newInformationAdded, setNewInformationAdded] = useState(false);
@@ -82,7 +83,7 @@ const CardProfil = () => {
   const [description, setDescription] = useState();
   const [buttonClicked, setButtonClicked] = useState(false);
   const [buttonSend, setButtonSend] = useState(false);
-  const [avatarFile, setAvatarFile] =  useState();
+  const [avatarFile, setAvatarFile] = useState();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -137,34 +138,25 @@ const CardProfil = () => {
     setNewInformationAdded(true);
   };
 
-  
-
   const handleChangeInputFile = (event) => {
     event.preventDefault();
-    setAvatarFile(event.target.value);
-  }
+    setAvatarFile(event.target.files[0]);
+  };
 
   const handleSubmitUpload = (e) => {
     e.preventDefault();
-    // axios
-    //   .post("/users/upload", avatarFile)
-    //   .then((response) => {
-    //     console.log(response)
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
-    let data = {
-      avatar: avatarFile
-    };
-    axios.post('/users/upload', data)
-      .then(function (response) {
-          //handle success
-          console.log(response);
+    const fd = new FormData();
+    fd.append("avatar", avatarFile, avatarFile.name);
+    axios
+      .post("/users/upload", fd)
+      .then((response) => {
+        //handle success
+        hasMessage(true);
+        setMessageToShow(response.messageToShow);
       })
-      .catch(function (response) {
-          //handle error
-          console.log(response);
+      .catch(function (err) {
+        //handle error
+        console.log(err);
       });
   };
 
@@ -173,28 +165,29 @@ const CardProfil = () => {
       className={classes.root}
       style={{ backgroundColor: isAdmin ? "blue" : "grey", width: "50vw" }}
     >
-      {/* <div
-        style={{
-          display: "flex",
-          width: "100%",
-          alignContext: "stretch",
-        }}
-      ></div> */}
       <div style={{ display: "flex", flexDirection: "row" }}>
         <Box style={{ width: "50%" }}>
-          <form onSubmit={handleSubmitUpload} encType="multipart/form-data">
-            <label for="avatar">Choose a profile picture: </label>
-            <input
-              onChange={handleChangeInputFile}
-              style={{ margin: 20 }}
-              type="file"
-              id="avatar"
-              name="avatar"
-              accept="image/png, image/jpeg"
+          {!user.avatar && (
+            <form onSubmit={handleSubmitUpload}>
+              <label for="avatar">Choose a profile picture: </label>
+              <input
+                onChange={handleChangeInputFile}
+                style={{ margin: 20 }}
+                type="file"
+                id="avatar"
+                name="avatar"
+                accept="image/png, image/jpeg"
+              />
+              <Button type="submit"> send </Button>
+            </form>
+          )}
+          {user.avatar && (
+            <img
+              src={user.avatar}
+              style={{ marginLeft: 55, borderRadius: 30, width: 100, height: 100 }}
+              alt="Grapefruit slice atop a pile of other slices"
             />
-            <Button type="submit"> send </Button>
-          </form>
-          <Avatar className={classes.purple}> {firstLetterPseudonyme}</Avatar>
+          )}
           <label className={classes.label}>
             Pseudonyme :
             <input

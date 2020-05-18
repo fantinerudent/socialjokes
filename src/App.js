@@ -28,8 +28,8 @@ function App() {
     () => ({ user, setUser, isAdmin, setIsAdmin, isLogged, setIsLogged }),
     [user, setUser, isLogged, setIsLogged, isAdmin, setIsAdmin]
   );
-    console.log("isAdmin", isAdmin)
-    console.log("isLogged", isLogged)
+
+  
   return (
     <UserProvider value={providerValue}>
       <Router>
