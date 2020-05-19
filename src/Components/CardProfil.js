@@ -185,7 +185,7 @@ const CardProfil = () => {
             <img
               src={user.avatar}
               style={{ marginLeft: 55, borderRadius: 30, width: 100, height: 100 }}
-              alt="Grapefruit slice atop a pile of other slices"
+              alt="my avatar"
             />
           )}
           <label className={classes.label}>

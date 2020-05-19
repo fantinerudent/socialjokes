@@ -1,5 +1,4 @@
 import React from "react";
-
 import { makeStyles } from "@material-ui/core/styles";
 import KanyeQuote from "../Components/KanyeQuote";
 import ChuckNorrisFact from "../Components/ChuckNorrisFacts";

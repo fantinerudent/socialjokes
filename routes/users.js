@@ -308,9 +308,8 @@ route.delete(
 
 route.post("/upload", upload.single("avatar"), (req, res, next) => {
   console.log(req.session);
-  let response = {};
   // response.message = "your image was uploaded";
-  response.avatar = req.file.filename;
+  let avatar = req.file.filename;
   client.connect((err) => {
     if (err) {
       console.log(err);
@@ -322,7 +321,7 @@ route.post("/upload", upload.single("avatar"), (req, res, next) => {
         { pseudonyme: req.session.userData.pseudonyme },
         {
           $set: {
-            avatar: "uploads/" + response.avatar,
+            avatar: "uploads/" + avatar,
           },
         }
       )
