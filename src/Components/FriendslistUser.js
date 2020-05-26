@@ -1,59 +1,65 @@
 import React, { useState, useContext, useEffect } from "react";
 import Axios from "axios";
 import UserContext from "../Contexts/UserContext";
-import SearchBar from "./SearchBar";
+import { makeStyles } from "@material-ui/core/styles";
+// import SearchBar from "./SearchBar";
+import CardFriends from "./CardFriends";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+  },
+}));
 
 const FriendslistUser = () => {
   const { user, setUser, isAdmin } = useContext(UserContext);
-  const [friends, setFriendsList] = useState([]);
+  const [confirmedFriends, setConfirmedFriendsList] = useState([]);
+  const [pendingFriends, setPendingFriendsList] = useState([]);
+  const [friendsRequestIreceived, setFriendsRequestIreceived] = useState([]);
+  const [friendsRequestIsent, setFriendsRequestIsent] = useState([]);
   const [messageToDisplay, setMessageToDisplay] = useState();
+  const classes = useStyles();
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await Axios.get(`/friends/friendslist/${user.pseudonyme}`);
-      setFriendsList(result.data);
+      setConfirmedFriendsList(result.data.confirmedFriends);
+      setPendingFriendsList(result.data.pendingFriends);
     };
     fetchData();
   }, [messageToDisplay]);
 
-  for (let i = 0; i < friends.length; i++) {
-    if (!friends[i].avatar || friends[i].avatar === "") {
-      friends[i].avatar = '/uploads/unknown.png'
+  for (let i = 0; i < confirmedFriends.length; i++) {
+    if (!confirmedFriends[i].avatar || confirmedFriends[i].avatar === "") {
+      confirmedFriends[i].avatar = "/uploads/unknown.png";
     }
   }
 
+  for (let i = 0; i < pendingFriends.length; i++) {
+    let friendsRequestIreceived = [];
+    let friendsRequestIsent = [];
+    if (!pendingFriends[i].avatar || pendingFriends[i].avatar === "") {
+      pendingFriends[i].avatar = "/uploads/unknown.png";
+    }
+    // if (!pendingFriends[i].myRequest) {
+    //   friendsRequestIreceived.push(pendingFriends[i]);
+    //   setFriendsRequestIreceived(friendsRequestIreceived);
+    // } 
+    // else {
+    //   friendsRequestIsent.push(pendingFriends[i]);
+    //   setFriendsRequestIsent(friendsRequestIsent);
+    // }
+  }
 
   return (
-    <>
-    <div> 
-      {friends &&
-        friends.map((element) => (
-          <div
-            style={{
-              width: "fit-content",
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-            key={element.id}
-          >
-            <span style={{alignSelf: 'center', marginLeft: 50}}> {element.pseudonyme} </span>
-            <span>
-              <img
-                src={element.avatar}
-                style={{
-                  marginLeft: 55,
-                  borderRadius: 30,
-                  width: 100,
-                  height: 100,
-                }}
-                alt="my friend"
-              />
-            </span>
-          </div>
-        ))}
-      {messageToDisplay && <div> {messageToDisplay}</div>}
+    <div className={classes.root}>
+      <CardFriends listToDisplay={confirmedFriends} title={"my friends"} />
+      <CardFriends
+        listToDisplay={pendingFriends}
+        title={"friends request I sent"}
+      />
     </div>
-    </>
   );
 };
 

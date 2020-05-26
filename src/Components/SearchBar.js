@@ -12,10 +12,10 @@ const useStyles = makeStyles((theme) => ({
     padding: "2px 4px",
     display: "flex",
     alignItems: "center",
-    position: "relative",
-    left: "50%",
+    position: "absolute",
+    left: "40%",
     transform: "perspective(1px) translateY(25%)",
-    width: 400,
+    width: 450,
   },
   input: {
     display: "flex",
@@ -27,11 +27,11 @@ const useStyles = makeStyles((theme) => ({
   },
   containerUserToDisplay: {
     display: "flex",
-    width: 'fit-content',
-    backgroundColor: 'red',
-    flexDirection: 'column',
-    textAlign: 'center',
-    margin:'0 auto',
+    width: "fit-content",
+    backgroundColor: "red",
+    flexDirection: "column",
+    textAlign: "center",
+    margin: "0 auto",
   },
 }));
 
@@ -39,6 +39,7 @@ const SearchBar = () => {
   const classes = useStyles();
   const [allUsers, setAllUsers] = useState([]);
   const [messageToDisplay, setMessageToDisplay] = useState();
+  const [hasMessage, setHasMessage] = useState(true);
   const [userToSearch, setUserToSearch] = useState();
   const [userToDisplay, setUserToDisplay] = useState();
 
@@ -50,25 +51,30 @@ const SearchBar = () => {
     fetchData();
   }, [messageToDisplay]);
 
-  console.log(allUsers, "all users");
-
   const handleChange = (event) => {
     setUserToSearch(event.currentTarget.value);
   };
 
+  const data = {
+    pseudonyme: userToSearch,
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const userFound = async () => {
-      const result = await axios.get(
-        `/friends/friendslist/search/${userToSearch}`
-      );
-      if (!result.data.avatar || result.data.avatar === "") {
-        result.data.avatar = "/uploads/unknown.png";
+    axios.post(`/friends/friendslist/search`, data).then((response) => {
+      console.log(response.data)
+      setHasMessage(response.data.hasMessage);
+      setMessageToDisplay(response.data.messageToDisplay);
+      if (response.data.pseudonyme) {
+        if (!response.data.avatar || response.data.avatar === "") {
+          console.log("coucou");
+          response.data.avatar = "/uploads/unknown.png";
+          setUserToDisplay(response.data);
+        }
       }
-
-      setUserToDisplay(result.data);
-    };
-    userFound();
+    }).catch((err) => {
+      console.log(err)
+    });
   };
 
   return (
@@ -77,9 +83,12 @@ const SearchBar = () => {
         <InputBase
           onChange={handleChange}
           className={classes.input}
-          placeholder="Search an user "
+          placeholder="Search an user or click the button to get the list"
           inputProps={{ "aria-label": "search a new user" }}
         />
+         {hasMessage && (
+        <span style={{backgroundColor:'red', fontSize:"1em" }}>{messageToDisplay}</span>
+      )}
         <form
           type="submit"
           onSubmit={handleSubmit}
@@ -91,26 +100,26 @@ const SearchBar = () => {
             className={classes.iconButton}
             aria-label="search"
           >
-            <SearchIcon />{" "}
+            <SearchIcon />
           </IconButton>
         </form>
       </Paper>
       {userToDisplay && (
         <>
-        <div className={classes.containerUserToDisplay}>
-        <span> result of your search :</span>
-          {userToDisplay.pseudonyme}
-          <img
-            src={userToDisplay.avatar}
-            style={{
-              // marginLeft: 55,
-              borderRadius: 30,
-              width: 100,
-              height: 100,
-            }}
-            alt="avatar user searched"
-          />
-        </div>
+          <div className={classes.containerUserToDisplay}>
+            <span> {messageToDisplay} </span>
+            {userToDisplay.pseudonyme}
+            <img
+              src={userToDisplay.avatar}
+              style={{
+                // marginLeft: 55,
+                borderRadius: 30,
+                width: 100,
+                height: 100,
+              }}
+              alt="avatar user searched"
+            />
+          </div>
         </>
       )}
     </div>

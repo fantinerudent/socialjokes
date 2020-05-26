@@ -52,7 +52,10 @@ route.get(
           console.log(err);
         }
         const informationsUser = result[0];
-        let response = informationsUser.friends;
+        let response ={
+          confirmedFriends: informationsUser.confirmedFriends,
+          pendingFriends: informationsUser.pendingFriends,
+        } 
         res.json(response);
       });
     });
@@ -60,11 +63,11 @@ route.get(
 );
 
 // route to get (data) of the user searched
-route.get(
-  "/friendslist/search/:pseudonyme",
+route.post(
+  "/friendslist/search",
   // middlewares.isThisUserLogged,
   (req, res, next) => {
-    let pseudonyme = req.params.pseudonyme;
+    let pseudonyme = req.body.pseudonyme;
     client.connect((err) => {
       if (err) {
         console.log(err);
@@ -72,16 +75,21 @@ route.get(
       let db = client.db("social_jokes");
       let collection = db.collection("users");
       collection.find({ pseudonyme: pseudonyme }).toArray((err, result) => {
-        let response;
         if (err) {
           console.log(err);
         }
-        if (!result) {
-          response.messageToDisplay = `No user found`;
+        if (!result.length) {
+          let response = {
+            hasMessage: true,
+            messageToDisplay: `No user found`,
+          };
           res.json(response);
+          client.close();
         } else {
           const informationsUser = result[0];
-          response = {
+          let response = {
+            hasMessage: true,
+            messageToDisplay: "Your result :",
             pseudonyme: informationsUser.pseudonyme,
             avatar: informationsUser.avatar,
           };

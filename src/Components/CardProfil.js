@@ -169,7 +169,7 @@ const CardProfil = () => {
         <Box style={{ width: "50%" }}>
           {!user.avatar && (
             <form onSubmit={handleSubmitUpload}>
-              <label for="avatar">Choose a profile picture: </label>
+              <label htmlFor="avatar">Choose a profile picture: </label>
               <input
                 onChange={handleChangeInputFile}
                 style={{ margin: 20 }}

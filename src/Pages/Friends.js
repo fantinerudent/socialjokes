@@ -13,7 +13,7 @@ const Friends = () => {
         <div>
          <SearchBar/>
         <div style={{display: 'flex'}}>
-            <MenuProfil/>
+            <MenuProfil style={{position: "relative", top:"20px", left: 10}}/>
             {(isAdmin && isLogged) && <FriendslistAdmin style={{display: 'flex'}}/>}
             {(!isAdmin && isLogged) && <FriendslistUser style={{display: 'flex'}} />}
         </div>
