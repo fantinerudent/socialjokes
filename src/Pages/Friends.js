@@ -3,21 +3,20 @@ import UserContext from "../Contexts/UserContext";
 import MenuProfil from "../Components/MenuProfil";
 import FriendslistAdmin from "../Components/FriendslistAdmin.js";
 import FriendslistUser from "../Components/FriendslistUser";
-import SearchBar from "../Components/SearchBar";
+// import SearchBar from "../Components/SearchBar";
 
 
 const Friends = () => {
     const { isLogged, isAdmin } = useContext(UserContext);
 
     return ( 
-        <div>
-         <SearchBar/>
+        
         <div style={{display: 'flex'}}>
             <MenuProfil style={{position: "relative", top:"20px", left: 10}}/>
             {(isAdmin && isLogged) && <FriendslistAdmin style={{display: 'flex'}}/>}
             {(!isAdmin && isLogged) && <FriendslistUser style={{display: 'flex'}} />}
         </div>
-        </div>
+        
      );
 }
  

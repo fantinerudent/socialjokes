@@ -114,6 +114,7 @@ route.post("/login", (req, res) => {
               gender: informationsUser.gender,
               age: informationsUser.age,
               email: informationsUser.email,
+              avatar: informationsUser.avatar,
               isLogged: true,
             };
             if (informationsUser.avatar) {
