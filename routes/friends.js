@@ -50,6 +50,7 @@ route.get(
           console.log(err);
         }
         const informationsUser = result[0];
+        console.log("informations user ", informationsUser);
         let response = {
           confirmedFriends: informationsUser.confirmedFriends,
           pendingFriends: informationsUser.pendingFriends,
@@ -159,7 +160,7 @@ route.post("/friendslist/update", (req, res) => {
           $push: {
             pendingFriends: {
               pseudonyme: userToAdd,
-              avatar: myAvatar,
+              avatar: "",
               myRequest: true,
             },
           },
@@ -177,10 +178,75 @@ route.post("/friendslist/update", (req, res) => {
           $push: {
             pendingFriends: {
               pseudonyme: myPseudonyme,
-              avatar: "",
+              avatar: myAvatar,
               myRequest: false,
             },
           },
+        }
+      )
+      .then((result) => {
+        console.log(result.value);
+      });
+    client.close();
+  });
+});
+
+route.post("/friendslist/update/needconfirmation", (req, res) => {
+  let myPseudonyme = req.body.mypseudonyme;
+  let myAvatar = req.body.myavatar;
+  let userToAdd = req.body.userToAdd;
+
+  client.connect((err) => {
+    if (err) {
+      console.log(err);
+    }
+    let db = client.db("social_jokes");
+    let collection = db.collection("users");
+    collection
+      .findOneAndUpdate(
+        {
+          pseudonyme: myPseudonyme,
+        },
+        {
+          $push: {
+            confirmedFriends: {
+              pseudonyme: userToAdd,
+              avatar: "",
+              myRequest: true,
+            },
+          },
+          $pull: {
+            pendingFriends: {pseudonyme:userToAdd}
+          }
+
+        }
+      )
+      .then((result) => {
+        console.log(result.value);
+      });
+    collection
+      .findOneAndUpdate(
+        {
+          pseudonyme: userToAdd,
+        },
+        {
+          $push: {
+            confirmedFriends: {
+              pseudonyme: myPseudonyme,
+              avatar: myAvatar,
+              myRequest: false,
+            },
+          },
+          $pull: {
+            pendingFriends: { pseudonyme: myPseudonyme },
+          },
+          // $unset: {
+          //   pendingFriends: {
+          //     pseudonyme: myPseudonyme,
+          //     avatar: myAvatar,
+          //     myRequest: false,
+          //   },
+          // },
         }
       )
       .then((result) => {

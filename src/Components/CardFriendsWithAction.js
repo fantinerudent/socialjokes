@@ -35,11 +35,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CardFriendsWithActions = ({ title, listToDisplay }) => {
+const CardFriendsWithActions = ({ title, listToDisplay, needConfirmation }) => {
 
     const { user } = useContext(UserContext);
-  let allusers = listToDisplay;
-  console.log(allusers);
+  // let allusers = listToDisplay;
+
 
   const handleClickCancel = (event, userToDelete) => {
     event.preventDefault();
@@ -61,7 +61,15 @@ const CardFriendsWithActions = ({ title, listToDisplay }) => {
       userToAdd: userToAdd,
     };
     
-    if (listToDisplay.length > 1) {
+    if (needConfirmation && listToDisplay.length > 0) {
+      console.log('hellow')
+      Axios.post('/friends/friendslist/update/needconfirmation', data).then((response) => {
+        console.log(response)
+    })
+
+    }
+
+    if (!needConfirmation && listToDisplay.length > 0) {
         Axios.post('/friends/friendslist/update', data).then((response) => {
             console.log(response)
         })

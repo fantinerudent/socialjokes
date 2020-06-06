@@ -51,31 +51,38 @@ const FriendslistUser = () => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await Axios.get(`/friends/friendslist/${user.pseudonyme}`);
+      console.log(" result ", result);
       setConfirmedFriendsList(result.data.confirmedFriends);
       setPendingFriendsList(result.data.pendingFriends);
     };
     fetchData();
   }, [messageToDisplay]);
 
-  for (let i = 0; i < confirmedFriends.length; i++) {
-    if (!confirmedFriends[i].avatar || confirmedFriends[i].avatar === "") {
-      confirmedFriends[i].avatar = "/uploads/unknown.png";
+  console.log("pending friends", pendingFriends);
+
+  if (confirmedFriends !== []) {
+    for (let i = 0; i < confirmedFriends.length; i++) {
+      if (!confirmedFriends[i].avatar || confirmedFriends[i].avatar === "") {
+        confirmedFriends[i].avatar = "/uploads/unknown.png";
+      }
     }
   }
 
   useEffect(() => {
-    for (let i = 0; i < pendingFriends.length; i++) {
-      let friendsRequestIreceived = [];
-      let friendsRequestIsent = [];
-      if (!pendingFriends[i].avatar || pendingFriends[i].avatar === "") {
-        pendingFriends[i].avatar = "/uploads/unknown.png";
-      }
-      if (!pendingFriends[i].myRequest) {
-        friendsRequestIreceived.push(pendingFriends[i]);
-        setFriendsRequestIreceived(friendsRequestIreceived);
-      } else if (pendingFriends[i].myRequest) {
-        friendsRequestIsent.push(pendingFriends[i]);
+    let friendsRequestIreceived = [];
+    let friendsRequestIsent = [];
+    if (pendingFriends !== []) {
+      for (let i = 0; i < pendingFriends.length; i++) {
+        if (!pendingFriends[i].avatar || pendingFriends[i].avatar === "") {
+          pendingFriends[i].avatar = "/uploads/unknown.png";
+        }
+        if (!pendingFriends[i].myRequest) {
+          friendsRequestIreceived.push(pendingFriends[i]);
+        } else if (pendingFriends[i].myRequest) {
+          friendsRequestIsent.push(pendingFriends[i]);
+        }
         setFriendsRequestIsent(friendsRequestIsent);
+        setFriendsRequestIreceived(friendsRequestIreceived);
       }
     }
   }, [pendingFriends]);
@@ -86,19 +93,35 @@ const FriendslistUser = () => {
         confirmedFriends={confirmedFriends}
         pendingFriends={pendingFriends}
       />
-      {confirmedFriends && (
-        <CardFriends listToDisplay={confirmedFriends} title={"my friends"} />
+      {confirmedFriends.length > 0 && (
+        <CardFriends listToDisplay={confirmedFriends} title={"my friends"} confirmedFriends={true}/>
       )}
-      {friendsRequestIreceived && (
+      {friendsRequestIreceived.length > 0 && (
         <CardFriendsWithActions
           title="Friends request"
           listToDisplay={friendsRequestIreceived}
+          needConfirmation={true}
         />
       )}
-      {friendsRequestIsent && (
+      {friendsRequestIsent.length > 0 && (
         <CardFriends
           listToDisplay={friendsRequestIsent}
           title={"friends request I sent"}
+        />
+      )}
+       {confirmedFriends.length === 0 && (
+        <CardFriends
+          message={"You don't have friend yet!"}
+          title={"my friends"}
+        />
+      )}
+      {friendsRequestIreceived.length === 0 && (
+        <CardFriends message="No pending request"  title="Friends request"/>
+      )}
+      {friendsRequestIsent.length === 0 && (
+        <CardFriends
+          title={"friends request I sent"}
+          message={"You didn't sent any invitation"}
         />
       )}
     </div>

@@ -141,7 +141,7 @@ const SearchBar = ({confirmedFriends, pendingFriends}) => {
           </IconButton>
         </form>
       </Paper>
-      {arrayOfUsersToDisplay && (
+      {arrayOfUsersToDisplay.length > 0 && (
         <CardFriendsWithAction title="all the users" listToDisplay={arrayOfUsersToDisplay}/>
       )}
       {userToDisplay && (
