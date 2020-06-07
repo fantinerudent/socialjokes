@@ -42,7 +42,25 @@ const CardFriendsWithActions = ({ title, listToDisplay, needConfirmation }) => {
 
 
   const handleClickCancel = (event, userToDelete) => {
-    event.preventDefault();
+    // event.preventDefault();
+    let data = {
+      mypseudonyme: user.pseudonyme,
+      myavatar: user.avatar,
+      userToDelete: userToDelete,
+    };
+    if (needConfirmation && listToDisplay.length > 0) {
+      console.log('hellow')
+      Axios.post('/friends/friendslist/update/delete/needconfirmation', data).then((response) => {
+        console.log(response)
+    })
+    }
+
+    if (!needConfirmation && listToDisplay.length > 0) {
+      console.log(listToDisplay)
+      // Axios.post('/friends/friendslist/update/delete', data).then((response) => {
+      //     console.log(response)
+      // })
+  }
   };
   const handleClickDone = (event, userToAdd) => {
 

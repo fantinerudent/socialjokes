@@ -2,12 +2,20 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import KanyeQuote from "../Components/KanyeQuote";
 import ChuckNorrisFact from "../Components/ChuckNorrisFacts";
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import Img from '../img/fourire.jpg';
 
 const useStyles = makeStyles({
-  root: {
+  title: {
+    fontSize: '3em',
+    textAlign: 'center',
+  },
+  img: {
+    height:"60%",
+    width:"100%",
+    position:"relative",
+    top:20,
+    opacity:0.7,
+    borderRadius:30
   }
 });
 
@@ -16,47 +24,14 @@ const useStyles = makeStyles({
 const Home = () => {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <h1> HOME </h1>
-      <KanyeQuote/>
-      <ChuckNorrisFact/>
-      <SimpleMenu/>
+    <div>
+      {/* <h1 className={classes.title}> HOME </h1> */}
+      <img className={classes.img} src={Img} alt="someone laughing" />
+      {/* <KanyeQuote/> */}
+      {/* <ChuckNorrisFact/> */}
     </div>
   );
 };
 
 export default Home;
 
-
-
-
-const SimpleMenu = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  return (
-    <div>
-      <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-        Open Menu
-      </Button>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
-      </Menu>
-    </div>
-  );
-}

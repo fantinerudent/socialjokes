@@ -216,9 +216,8 @@ route.post("/friendslist/update/needconfirmation", (req, res) => {
             },
           },
           $pull: {
-            pendingFriends: {pseudonyme:userToAdd}
-          }
-
+            pendingFriends: { pseudonyme: userToAdd },
+          },
         }
       )
       .then((result) => {
@@ -240,13 +239,49 @@ route.post("/friendslist/update/needconfirmation", (req, res) => {
           $pull: {
             pendingFriends: { pseudonyme: myPseudonyme },
           },
-          // $unset: {
-          //   pendingFriends: {
-          //     pseudonyme: myPseudonyme,
-          //     avatar: myAvatar,
-          //     myRequest: false,
-          //   },
-          // },
+        }
+      )
+      .then((result) => {
+        console.log(result.value);
+      });
+    client.close();
+  });
+});
+
+route.post("/friendslist/update/delete/needconfirmation", (req, res) => {
+  let myPseudonyme = req.body.mypseudonyme;
+  let userToDelete = req.body.userToDelete;
+  console.log('usertodelete ==>',userToDelete)
+
+  client.connect((err) => {
+    if (err) {
+      console.log(err);
+    }
+    let db = client.db("social_jokes");
+    let collection = db.collection("users");
+    collection
+      .findOneAndUpdate(
+        {
+          pseudonyme: myPseudonyme,
+        },
+        {
+          $pull: {
+            pendingFriends: { pseudonyme: userToDelete },
+          },
+        }
+      )
+      .then((result) => {
+        console.log(result.value);
+      });
+    collection
+      .findOneAndUpdate(
+        {
+          pseudonyme: userToDelete,
+        },
+        {
+          $pull: {
+            pendingFriends: { pseudonyme: myPseudonyme },
+          },
         }
       )
       .then((result) => {

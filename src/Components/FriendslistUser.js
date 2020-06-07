@@ -10,6 +10,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexDirection: "column",
+    position:"relative",
+    left:30,
   },
   container: {
     borderRadius: 30,
@@ -52,6 +54,12 @@ const FriendslistUser = () => {
     const fetchData = async () => {
       const result = await Axios.get(`/friends/friendslist/${user.pseudonyme}`);
       console.log(" result ", result);
+      if (!result.data.confirmedFriends) {
+        result.data.confirmedFriends=[];
+      }
+      if (!result.data.pendingFriends) {
+        result.data.pendingFriends=[];
+      }
       setConfirmedFriendsList(result.data.confirmedFriends);
       setPendingFriendsList(result.data.pendingFriends);
     };
@@ -60,18 +68,21 @@ const FriendslistUser = () => {
 
   console.log("pending friends", pendingFriends);
 
-  if (confirmedFriends !== []) {
-    for (let i = 0; i < confirmedFriends.length; i++) {
-      if (!confirmedFriends[i].avatar || confirmedFriends[i].avatar === "") {
-        confirmedFriends[i].avatar = "/uploads/unknown.png";
+  if (confirmedFriends) {
+    if (confirmedFriends.length > 0) {
+      for (let i = 0; i < confirmedFriends.length; i++) {
+        if (!confirmedFriends[i].avatar || confirmedFriends[i].avatar === "") {
+          confirmedFriends[i].avatar = "/uploads/unknown.png";
+        }
       }
     }
+
   }
 
   useEffect(() => {
     let friendsRequestIreceived = [];
     let friendsRequestIsent = [];
-    if (pendingFriends !== []) {
+    if (pendingFriends.length > 0) {
       for (let i = 0; i < pendingFriends.length; i++) {
         if (!pendingFriends[i].avatar || pendingFriends[i].avatar === "") {
           pendingFriends[i].avatar = "/uploads/unknown.png";

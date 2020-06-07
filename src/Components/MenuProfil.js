@@ -45,7 +45,7 @@ const MenuProfil = () => {
 
   const classes = useStyles();
   return (
-    <div>
+    <div style={{position:"relative", top:20, left:10}}>
       <List
         component="nav"
         className={classes.blue}

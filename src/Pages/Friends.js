@@ -12,7 +12,7 @@ const Friends = () => {
     return ( 
         
         <div style={{display: 'flex'}}>
-            <MenuProfil style={{position: "relative", top:"20px", left: 10}}/>
+            <MenuProfil/>
             {(isAdmin && isLogged) && <FriendslistAdmin style={{display: 'flex'}}/>}
             {(!isAdmin && isLogged) && <FriendslistUser style={{display: 'flex'}} />}
         </div>
