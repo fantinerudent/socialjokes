@@ -9,7 +9,7 @@ const FriendslistAdmin = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await Axios.get("/friends/friendslistadmin");
+      const result = await Axios.get("/friends/friendslist");
       setFriendsList(result.data);
     };
     fetchData();
