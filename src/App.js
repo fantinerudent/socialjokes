@@ -49,9 +49,13 @@ function App() {
           </Route>
           <Route path="/friendslist">
             {isLogged && <Friends/>}
-            {/* {(isAdmin && isLogged) && <FriendslistAdmin />}
+             {/* {(isAdmin && isLogged) && <FriendslistAdmin />}
             {(!isAdmin && isLogged) && <FriendslistUser />} */}
-            {/* {!isLogged && <Redirect to="/" />} */}
+            {!isLogged && <Redirect to="/" />}  */}
+          </Route>
+          <Route path="/wall/:user">
+            {isLogged && <Profil />}
+            {!isLogged && <Redirect to="/" />}
           </Route>
         </Switch>
       </Router>
