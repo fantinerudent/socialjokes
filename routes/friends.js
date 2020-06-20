@@ -14,7 +14,7 @@ const client = new MongoClient(uri, {
 // route to get the list with ALL the users,
 route.get(
   "/friendslist",
-  // middlewares.isThisUserLogged,
+  middlewares.isThisUserLogged,
   (req, res, next) => {
     client.connect((err) => {
       if (err) {
@@ -36,7 +36,7 @@ route.get(
 // route to get (data) the friends'users in DB
 route.get(
   "/friendslist/:pseudonyme",
-  // middlewares.isThisUserLogged,
+  middlewares.isThisUserLogged,
   (req, res, next) => {
     let pseudonyme = req.params.pseudonyme;
     client.connect((err) => {
@@ -64,8 +64,6 @@ route.get(
 // route to get the list of the users with exceptions :
 route.post("/friendslist/except", (req, res, next) => {
   let pseudonyme = req.body.myPseudonyme;
-  let pendingFriends = req.body.pendingFriends;
-  let confirmedFriends = req.body.pendingFriends;
   console.log(req.body.pendingFriends.pseudonyme);
   let arrayOfExceptions = [pseudonyme];
 
@@ -104,7 +102,7 @@ route.post("/friendslist/except", (req, res, next) => {
 // route to get (data) of the user searched
 route.post(
   "/friendslist/search",
-  // middlewares.isThisUserLogged,
+  middlewares.isThisUserLogged,
   (req, res) => {
     let pseudonyme = req.body.pseudonyme;
     client.connect((err) => {
@@ -144,7 +142,6 @@ route.post("/friendslist/update", (req, res) => {
   let myPseudonyme = req.body.mypseudonyme;
   let myAvatar = req.body.myavatar;
   let userToAdd = req.body.userToAdd;
-  console.log("me : ", myPseudonyme, "the user to add", userToAdd);
   client.connect((err) => {
     if (err) {
       console.log(err);

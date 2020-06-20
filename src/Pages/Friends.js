@@ -1,9 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext} from "react";
 import UserContext from "../Contexts/UserContext";
 import MenuProfil from "../Components/MenuProfil";
 import FriendslistAdmin from "../Components/FriendslistAdmin.js";
 import FriendslistUser from "../Components/FriendslistUser";
-// import SearchBar from "../Components/SearchBar";
 
 
 const Friends = () => {

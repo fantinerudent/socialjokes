@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     textAlign: 'center',
   },
   img: {
-    height:"60%",
+    height:"86vh",
     width:"100%",
     position:"relative",
     top:20,

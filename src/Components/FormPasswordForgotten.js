@@ -54,6 +54,7 @@ const FormPasswordForgotten = () => {
   return (
     <>
       <form onSubmit={handleSubmit} className={classes.root} autoComplete="off">
+        <label> You forgot your password ? No worries, we got you!</label>
         <TextField
           type="email"
           onChange={handleInputEmailChange}
