@@ -28,12 +28,9 @@ const Header = () => {
 
   const { user, isLogged, setIsLogged } = useContext(UserContext);
 
-  console.log("render du Header," , isLogged)
-
   //usage of the context to know if the user is logged.
-
-  localStorage.setItem("isLogged", isLogged);
-  const isLoggedLocally = JSON.parse(localStorage.getItem("isLogged"));
+  // localStorage.setItem("isLogged", isLogged);
+  // const isLoggedLocally = JSON.parse(localStorage.getItem("isLogged"));
 
   const handleClickSignOut = (event) => {
     event.preventDefault();
@@ -64,7 +61,7 @@ const Header = () => {
               Social Jokes
             </Link>
           </Typography>
-          {!isLoggedLocally && (
+          {!isLogged && (
             <>
               <Link className={classes.LinkButton} color="inherit" to="/login">
                 Login
@@ -78,7 +75,7 @@ const Header = () => {
               </Link>
             </>
           )}
-          {isLoggedLocally && (
+          {isLogged && (
             <>
               <span style={{ marginRight: "10px" }}>
                 {user.pseudonyme} est connecté :
