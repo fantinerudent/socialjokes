@@ -61,11 +61,8 @@ const FormLogin = () => {
         setNewMessageError(response.data.errorMessage);
         setUser(response.data.userData);
         setIsLogged(response.data.isLogged);
-        if ( response.data.userData.isAdministrator) {
-          setIsAdmin(response.data.userData.isAdministrator) 
-        }
-        else {setIsAdmin(false)};
-        }) 
+        setIsAdmin(response.data.userData.isAdministrator);
+      })
       .catch((err) => {
         console.error(err);
       });
