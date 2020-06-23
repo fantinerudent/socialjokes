@@ -19,7 +19,7 @@ const session = {
 };
 
 
-const publicPath = path.join(__dirname, '../client/', 'public');
+const publicPath = path.join(__dirname, './client/', 'public');
 console.log(publicPath)
 
 // app.use(express.static(publicPath));
