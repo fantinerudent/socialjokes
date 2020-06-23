@@ -19,11 +19,17 @@ const session = {
 };
 
 
-const publicPath = path.join(__dirname, './client/', 'public');
-console.log(publicPath)
+const publicPath = path.join(__dirname, './client/public/');
+console.log("publicPath", publicPath)
 
 // app.use(express.static(publicPath));
+
+// Serve static files from the React app
 app.use(express.static(path.join(__dirname, "routes")));
+
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname+'/client/build/index.html'));
+// });
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(publicPath, 'index.html'));
