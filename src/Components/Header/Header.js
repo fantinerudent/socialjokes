@@ -28,10 +28,6 @@ const Header = () => {
 
   const { user, isLogged, setIsLogged } = useContext(UserContext);
 
-  //usage of the context to know if the user is logged.
-  // localStorage.setItem("isLogged", isLogged);
-  // const isLoggedLocally = JSON.parse(localStorage.getItem("isLogged"));
-
   const handleClickSignOut = (event) => {
     event.preventDefault();
     setIsLogged(false);

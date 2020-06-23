@@ -25,9 +25,9 @@ const publicPath = path.join(__dirname, '..', 'public');
 // app.use(express.static(publicPath));
 app.use(express.static(path.join(__dirname, "routes")));
 
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(publicPath, 'index.html'));
-// });
+app.get('/', (req, res) => {
+  res.sendFile(path.join(publicPath, 'index.html'));
+});
 
 app.use(cors());
 app.use(express.json());
