@@ -104,7 +104,6 @@ route.post("/login", (req, res) => {
             response.error = false;
             response.isLogged = true;
             response.userData = {
-              isAdministrator: informationsUser.administrator,
               pseudonyme: informationsUser.pseudonyme,
               password: informationsUser.password,
               favs: informationsUser.favs,
@@ -115,6 +114,7 @@ route.post("/login", (req, res) => {
               age: informationsUser.age,
               email: informationsUser.email,
               avatar: informationsUser.avatar,
+              isAdministrator: informationsUser.administrator,
               isLogged: true,
             };
             if (informationsUser.avatar) {
