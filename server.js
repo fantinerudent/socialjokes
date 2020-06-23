@@ -25,7 +25,9 @@ console.log("publicPath", publicPath)
 // app.use(express.static(publicPath));
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, "routes")));
+// app.use(express.static(path.join(__dirname, "routes")));
+app.use(express.static(path.join(__dirname, 'client/build')));
+
 
 // app.get('*', (req, res) => {
 //   res.sendFile(path.join(__dirname+'/client/build/index.html'));
