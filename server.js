@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use('./client/public/uploads', express.static("uploads"))
+
 
 app.use(expressSession(session));
 
@@ -44,6 +44,8 @@ app.use("/users", users);
 // app.use('/chat', chat);
 // for every calls made to the /friends, I want to use the file friends.js .
 app.use("/friends", friends);
+
+app.use('/upload', express.static("./client/public/uploads"))
 
 app.listen(
   process.env.PORT || 8080,

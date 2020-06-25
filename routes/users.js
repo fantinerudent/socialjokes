@@ -308,8 +308,6 @@ route.delete(
 );
 
 route.post("/upload", upload.single("avatar"), (req, res, next) => {
-  console.log(req.session);
-  // response.message = "your image was uploaded";
   let avatar = req.file.filename;
   client.connect((err) => {
     if (err) {
