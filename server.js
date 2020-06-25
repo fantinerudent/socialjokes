@@ -18,29 +18,19 @@ const session = {
   resave: false,
 };
 
-
-const publicPath = path.join(__dirname, './client/public/');
-console.log("publicPath", publicPath)
-
-// app.use(express.static(publicPath));
+const publicPath = path.join(__dirname, "./client/public/");
 
 // Serve static files from the React app
-// app.use(express.static(path.join(__dirname, "routes")));
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, "client/build")));
 
-
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname+'/client/build/index.html'));
-// });
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(publicPath, 'index.html'));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(publicPath, "index.html"));
 });
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// app.use('./public/uploads', express.static("uploads"))
+app.use('./public/uploads', express.static("uploads"))
 
 app.use(expressSession(session));
 
@@ -50,6 +40,7 @@ const friends = require("./routes/friends");
 // for every calls made to the /users, I want to use the file users.js .
 app.use("/users", users);
 // for every calls made to the /chat, I want to use the file chat.js .
+// TODO : 
 // app.use('/chat', chat);
 // for every calls made to the /friends, I want to use the file friends.js .
 app.use("/friends", friends);
