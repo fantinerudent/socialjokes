@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FriendslistUser = () => {
-  const { user, setUser, isAdmin } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [confirmedFriends, setConfirmedFriendsList] = useState([]);
   const [pendingFriends, setPendingFriendsList] = useState([]);
   const [friendsRequestIreceived, setFriendsRequestIreceived] = useState([]);
@@ -53,7 +53,6 @@ const FriendslistUser = () => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await Axios.get(`/friends/friendslist/${user.pseudonyme}`);
-      console.log(" result ", result);
       if (!result.data.confirmedFriends) {
         result.data.confirmedFriends=[];
       }

@@ -157,7 +157,6 @@ route.post("/register", (req, res) => {
         }
         if (!result.length) {
           req.session.userData = response.userData;
-          console.log("req session register => ", req.session);
           let insertion = {};
           insertion.pseudonyme = req.body.pseudonyme;
           insertion.password = req.body.password;
@@ -204,7 +203,6 @@ route.post("/update/userdetails", (req, res) => {
     }
     let db = client.db("social_jokes");
     let collection = db.collection("users");
-    console.log("userDataAdding", userDataAdding);
     collection
       .findOneAndUpdate(
         { pseudonyme: req.body.pseudonyme },
@@ -219,12 +217,10 @@ route.post("/update/userdetails", (req, res) => {
       )
       .then((result) => {
         if (!result.value) {
-          console.log("profile not updated");
           response.errorMessage = "something went wrong";
           response.error = true;
           res.json(response);
         } else {
-          console.log("update ok!");
           response.error = false;
           response.message = true;
           response.messageToShow = " Your profile has been updated ! ";
@@ -258,7 +254,6 @@ route.post("/passwordforgotten", (req, res) => {
         }
       )
       .then((result) => {
-        console.log("result", result.value);
         if (!result.value) {
           response.errorMessage = "email adress incorrect";
           response.error = true;
@@ -290,7 +285,6 @@ route.delete(
   middlewares.isThisUserAdmin,
   (req, res, next) => {
     let pseudonyme = req.params.pseudonyme;
-    console.log("delete pseudo ", pseudonyme);
     client.connect((err) => {
       let response = {};
       if (err) {
@@ -326,12 +320,10 @@ route.post("/upload", upload.single("avatar"), (req, res, next) => {
       )
       .then((result) => {
         if (!result.value) {
-          console.log("profile not updated");
           response.errorMessage = "something went wrong";
           response.error = true;
           res.json(response);
         } else {
-          console.log("update ok!");
           response.error = false;
           response.message = true;
           response.messageToShow = " Your profile has been updated ! ";

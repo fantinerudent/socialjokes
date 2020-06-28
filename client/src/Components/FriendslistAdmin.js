@@ -17,7 +17,6 @@ const FriendslistAdmin = () => {
 
   const handleClick = (event, pseudonyme) => {
     event.preventDefault();
-    console.log("clicked => ", pseudonyme);
     pseudonymeUserToDelete = pseudonyme;
     Axios.delete(`/users/delete/${pseudonymeUserToDelete}`)
       .then((response) => {

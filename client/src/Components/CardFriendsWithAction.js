@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Axios from 'axios';
+import Axios from "axios";
 import UserContext from "../Contexts/UserContext";
 import DoneOutlineIcon from "@material-ui/icons/DoneOutline";
 import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
@@ -36,10 +36,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CardFriendsWithActions = ({ title, listToDisplay, needConfirmation }) => {
-
-    const { user } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   // let allusers = listToDisplay;
-
 
   const handleClickCancel = (event, userToDelete) => {
     // event.preventDefault();
@@ -49,48 +47,33 @@ const CardFriendsWithActions = ({ title, listToDisplay, needConfirmation }) => {
       userToDelete: userToDelete,
     };
     if (needConfirmation && listToDisplay.length > 0) {
-      console.log('hellow')
-      Axios.post('/friends/friendslist/update/delete/needconfirmation', data).then((response) => {
-        console.log(response)
-    })
+      Axios.post(
+        "/friends/friendslist/update/delete/needconfirmation",
+        data
+      ).then((response) => {
+        console.log(response);
+      });
     }
-
-    if (!needConfirmation && listToDisplay.length > 0) {
-      console.log(listToDisplay)
-      // Axios.post('/friends/friendslist/update/delete', data).then((response) => {
-      //     console.log(response)
-      // })
-  }
   };
   const handleClickDone = (event, userToAdd) => {
-
-    // TODO :  delete the one selected in front
-    // for (let i=0; i < listToDisplay.length; i++) {
-    //     if (listToDisplay[i].pseudonyme.includes(userToAdd)) {
-    //         console.log("youpi match found")
-    //     } else {
-    //         console.log("nop")
-    //     }
-    // }
-     
     let data = {
       mypseudonyme: user.pseudonyme,
       myavatar: user.avatar,
       userToAdd: userToAdd,
     };
-    
-    if (needConfirmation && listToDisplay.length > 0) {
-      console.log('hellow')
-      Axios.post('/friends/friendslist/update/needconfirmation', data).then((response) => {
-        console.log(response)
-    })
 
+    if (needConfirmation && listToDisplay.length > 0) {
+      Axios.post("/friends/friendslist/update/needconfirmation", data).then(
+        (response) => {
+          console.log(response);
+        }
+      );
     }
 
     if (!needConfirmation && listToDisplay.length > 0) {
-        Axios.post('/friends/friendslist/update', data).then((response) => {
-            console.log(response)
-        })
+      Axios.post("/friends/friendslist/update", data).then((response) => {
+        console.log(response);
+      });
     }
   };
 

@@ -12,26 +12,22 @@ const client = new MongoClient(uri, {
 });
 
 // route to get the list with ALL the users,
-route.get(
-  "/friendslist",
-  middlewares.isThisUserLogged,
-  (req, res, next) => {
-    client.connect((err) => {
+route.get("/friendslist", middlewares.isThisUserLogged, (req, res, next) => {
+  client.connect((err) => {
+    if (err) {
+      console.log(err);
+    }
+    let db = client.db("social_jokes");
+    let collection = db.collection("users");
+    collection.find().toArray((err, result) => {
       if (err) {
         console.log(err);
+      } else {
+        return res.json(result);
       }
-      let db = client.db("social_jokes");
-      let collection = db.collection("users");
-      collection.find().toArray((err, result) => {
-        if (err) {
-          console.log(err);
-        } else {
-          return res.json(result);
-        }
-      });
     });
-  }
-);
+  });
+});
 
 // route to get (data) the friends'users in DB
 route.get(
@@ -50,7 +46,6 @@ route.get(
           console.log(err);
         }
         const informationsUser = result[0];
-        console.log("informations user ", informationsUser);
         let response = {
           confirmedFriends: informationsUser.confirmedFriends,
           pendingFriends: informationsUser.pendingFriends,
@@ -64,7 +59,6 @@ route.get(
 // route to get the list of the users with exceptions :
 route.post("/friendslist/except", (req, res, next) => {
   let pseudonyme = req.body.myPseudonyme;
-  console.log(req.body.pendingFriends.pseudonyme);
   let arrayOfExceptions = [pseudonyme];
 
   for (let i = 0; i < req.body.pendingFriends.length; i++) {
@@ -73,8 +67,6 @@ route.post("/friendslist/except", (req, res, next) => {
   for (let i = 0; i < req.body.confirmedFriends.length; i++) {
     arrayOfExceptions.push(req.body.confirmedFriends[i].pseudonyme);
   }
-  console.log("array of exceptions => ", arrayOfExceptions);
-
   client.connect((err) => {
     if (err) {
       console.log(err);
@@ -100,42 +92,38 @@ route.post("/friendslist/except", (req, res, next) => {
 });
 
 // route to get (data) of the user searched
-route.post(
-  "/friendslist/search",
-  middlewares.isThisUserLogged,
-  (req, res) => {
-    let pseudonyme = req.body.pseudonyme;
-    client.connect((err) => {
+route.post("/friendslist/search", middlewares.isThisUserLogged, (req, res) => {
+  let pseudonyme = req.body.pseudonyme;
+  client.connect((err) => {
+    if (err) {
+      console.log(err);
+    }
+    let db = client.db("social_jokes");
+    let collection = db.collection("users");
+    collection.find({ pseudonyme: pseudonyme }).toArray((err, result) => {
       if (err) {
         console.log(err);
       }
-      let db = client.db("social_jokes");
-      let collection = db.collection("users");
-      collection.find({ pseudonyme: pseudonyme }).toArray((err, result) => {
-        if (err) {
-          console.log(err);
-        }
-        if (!result.length) {
-          let response = {
-            hasMessage: true,
-            messageToDisplay: `No user found`,
-          };
-          res.json(response);
-          client.close();
-        } else {
-          const informationsUser = result[0];
-          let response = {
-            hasMessage: true,
-            messageToDisplay: "Your result :",
-            pseudonyme: informationsUser.pseudonyme,
-            avatar: informationsUser.avatar,
-          };
-          res.json(response);
-        }
-      });
+      if (!result.length) {
+        let response = {
+          hasMessage: true,
+          messageToDisplay: `No user found`,
+        };
+        res.json(response);
+        client.close();
+      } else {
+        const informationsUser = result[0];
+        let response = {
+          hasMessage: true,
+          messageToDisplay: "Your result :",
+          pseudonyme: informationsUser.pseudonyme,
+          avatar: informationsUser.avatar,
+        };
+        res.json(response);
+      }
     });
-  }
-);
+  });
+});
 
 // route to update a friendslist with a new list. (add)
 route.post("/friendslist/update", (req, res) => {
@@ -248,7 +236,6 @@ route.post("/friendslist/update/needconfirmation", (req, res) => {
 route.post("/friendslist/update/delete/needconfirmation", (req, res) => {
   let myPseudonyme = req.body.mypseudonyme;
   let userToDelete = req.body.userToDelete;
-  console.log('usertodelete ==>',userToDelete)
 
   client.connect((err) => {
     if (err) {

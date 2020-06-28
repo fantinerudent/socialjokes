@@ -7,8 +7,7 @@ import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import UserContext from "../Contexts/UserContext";
-import CardFriends from './CardFriends';
-import CardFriendsWithAction from './CardFriendsWithAction'
+import CardFriendsWithAction from "./CardFriendsWithAction";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchBar = ({confirmedFriends, pendingFriends}) => {
+const SearchBar = ({ confirmedFriends, pendingFriends }) => {
   const classes = useStyles();
   const [allUsers, setAllUsers] = useState([]);
   const [messageToDisplay, setMessageToDisplay] = useState();
@@ -48,7 +47,6 @@ const SearchBar = ({confirmedFriends, pendingFriends}) => {
   const [arrayOfUsersToDisplay, setArrayOfUsersToDisplay] = useState([]);
 
   const { user } = useContext(UserContext);
-  console.log(user)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,7 +71,7 @@ const SearchBar = ({confirmedFriends, pendingFriends}) => {
   if (user.avatar) {
     data.myAvatar = user.avatar;
   } else {
-    data.myAvatar = '';
+    data.myAvatar = "";
   }
 
   const handleSubmit = (e) => {
@@ -96,18 +94,23 @@ const SearchBar = ({confirmedFriends, pendingFriends}) => {
         .catch((err) => {
           console.log(err);
         });
-    } 
-    else {
-      axios.post('/friends/friendslist/except', data).then((response)=> {
-        setArrayOfUsersToDisplay((response.data)) 
-      }).catch((err) => {
-        console.log(err)
-      })
+    } else {
+      axios
+        .post("/friends/friendslist/except", data)
+        .then((response) => {
+          setArrayOfUsersToDisplay(response.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
   for (let i = 0; i < arrayOfUsersToDisplay.length; i++) {
-    if (!arrayOfUsersToDisplay[i].avatar || arrayOfUsersToDisplay[i].avatar === "") {
+    if (
+      !arrayOfUsersToDisplay[i].avatar ||
+      arrayOfUsersToDisplay[i].avatar === ""
+    ) {
       arrayOfUsersToDisplay[i].avatar = "/uploads/unknown.png";
     }
   }
@@ -142,7 +145,10 @@ const SearchBar = ({confirmedFriends, pendingFriends}) => {
         </form>
       </Paper>
       {arrayOfUsersToDisplay.length > 0 && (
-        <CardFriendsWithAction title="all the users" listToDisplay={arrayOfUsersToDisplay}/>
+        <CardFriendsWithAction
+          title="all the users"
+          listToDisplay={arrayOfUsersToDisplay}
+        />
       )}
       {userToDisplay && (
         <>

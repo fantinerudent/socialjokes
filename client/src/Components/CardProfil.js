@@ -4,7 +4,6 @@ import UserContext from "../Contexts/UserContext";
 import { makeStyles } from "@material-ui/core/styles";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
-import Avatar from "@material-ui/core/Avatar";
 import { deepOrange, deepPurple } from "@material-ui/core/colors";
 import Favorites from "./userDetails/Favorites";
 import Description from "./userDetails/Description";
@@ -69,9 +68,6 @@ const CardProfil = () => {
   const { user, setUser, isAdmin } = useContext(UserContext);
   let copyUser = user;
 
-  console.log(user);
-
-  const firstLetterPseudonyme = user.pseudonyme.charAt(0);
   const classes = useStyles();
   const [newInformationAdded, setNewInformationAdded] = useState(false);
   const [openOptions, setOpenOptions] = useState(false);
@@ -100,14 +96,11 @@ const CardProfil = () => {
             setNewMessageError(response.data.errorMessage);
             hasMessage(response.data.message);
             setMessageToShow(response.data.messageToShow);
-            console.log(message);
           })
           .catch((err) => {
             console.error(err);
           });
       }
-    } else {
-      console.log("nothing to add");
     }
   };
 
@@ -184,7 +177,12 @@ const CardProfil = () => {
           {user.avatar && (
             <img
               src={user.avatar}
-              style={{ marginLeft: 55, borderRadius: 30, width: 100, height: 100 }}
+              style={{
+                marginLeft: 55,
+                borderRadius: 30,
+                width: 100,
+                height: 100,
+              }}
               alt="my avatar"
             />
           )}
